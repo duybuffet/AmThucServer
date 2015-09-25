@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JSplitPane;
 
 /**
  *
@@ -33,6 +35,7 @@ public class ServerFrame extends javax.swing.JFrame {
      */
     public ServerFrame() {
         initComponents();
+        menuPanel = new MenuPanel(this);
         try {
             myServer = new ServerSocket(port);
 
@@ -44,14 +47,16 @@ public class ServerFrame extends javax.swing.JFrame {
             System.out.print("Server is running ... ");
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
     }
-    
+
     private int port = 2015;
     private ServerSocket myServer;
     private ArrayList<Client> arrClients = new ArrayList<Client>();
     private ArrayList<User> arrUsers = new ArrayList<User>();
     private UserDAO userDao = new UserDAO();
+    
 
     public void listening() throws NullPointerException, IOException {
         while (true) {
@@ -108,7 +113,7 @@ public class ServerFrame extends javax.swing.JFrame {
 
     public void checkLogin(Message msg, Client client) throws SQLException, ClassNotFoundException {
         Message rs = new Message();
-        User user = userDao.login(msg.getUser());        
+        User user = userDao.login(msg.getUser());
         rs.setMsgID(GLOBAL.TO_CLIENT.LOGIN);
         if (user != null) {
             rs.setMsg("SUCCESS");
@@ -199,17 +204,19 @@ public class ServerFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainSplitPane = new javax.swing.JSplitPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
         );
 
         pack();
@@ -219,53 +226,62 @@ public class ServerFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
-            /* Set the Nimbus look and feel */
+        try {
+            ServerFrame server = null;
+            server = new ServerFrame();
+            server.setVisible(true);
+            server.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            
+            server.listening();
+        } catch (NullPointerException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /* Set the Nimbus look and feel */
             //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
             /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-            * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-            */
-            try {
-                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
-                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                        break;
-                    }
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
                 }
-            } catch (ClassNotFoundException ex) {
-                java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-                java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
             //</editor-fold>
-            //</editor-fold>
-            
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        ServerFrame server = null;
-                        server = new ServerFrame();
-                        server.setVisible(true);
-                        server.listening();   
-                    } catch (NullPointerException ex) {
-                        Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            });
+        //</editor-fold>
 
+        /* Create and display the form */
+//            java.awt.EventQueue.invokeLater(new Runnable() {
+//                public void run() {
+//                    
+//                }
+//            });
         //</editor-fold>
         //</editor-fold>
     }
-    
-    
 
+    public JSplitPane getMainSplitPane() {
+        return mainSplitPane;
+    }
+
+    public void setMainSplitPane(JSplitPane mainSplitPane) {
+        this.mainSplitPane = mainSplitPane;
+    }
+
+    private MenuPanel menuPanel;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSplitPane mainSplitPane;
     // End of variables declaration//GEN-END:variables
 }

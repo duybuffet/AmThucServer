@@ -1,13 +1,13 @@
 package com.amthuc.server;
 
 import com.amthuc.model.User;
-import com.amthuc.view.ServerFrame;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.amthuc.view.ServerFrame;
 
 public class Client extends Thread {
 
