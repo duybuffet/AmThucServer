@@ -212,12 +212,14 @@ public class ServerFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE)
+            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+            .addComponent(mainSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
+
+        mainSplitPane.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -231,7 +233,8 @@ public class ServerFrame extends javax.swing.JFrame {
             server = new ServerFrame();
             server.setVisible(true);
             server.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            
+            server.setResizable(false);
+            server.setLocationRelativeTo(null);
             server.listening();
         } catch (NullPointerException ex) {
             Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);

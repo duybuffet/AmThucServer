@@ -46,30 +46,30 @@ public class LoginPanel extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Login System");
         add(jLabel1);
-        jLabel1.setBounds(350, 80, 190, 40);
+        jLabel1.setBounds(420, 150, 190, 40);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Username :");
         add(jLabel2);
-        jLabel2.setBounds(260, 160, 90, 20);
+        jLabel2.setBounds(330, 230, 90, 20);
         add(txtUName);
-        txtUName.setBounds(380, 160, 150, 20);
+        txtUName.setBounds(450, 230, 150, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Password :");
         add(jLabel3);
-        jLabel3.setBounds(260, 200, 90, 15);
+        jLabel3.setBounds(330, 270, 90, 15);
         add(txtPass);
-        txtPass.setBounds(380, 200, 150, 20);
+        txtPass.setBounds(450, 270, 150, 20);
 
         btnLogin.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnLogin.setText("Login");
         add(btnLogin);
-        btnLogin.setBounds(370, 250, 100, 30);
+        btnLogin.setBounds(440, 320, 100, 30);
 
         jLabel4.setForeground(new java.awt.Color(0, 153, 153));
         add(jLabel4);
-        jLabel4.setBounds(0, 0, 860, 520);
+        jLabel4.setBounds(0, 0, 980, 510);
     }// </editor-fold>//GEN-END:initComponents
 
     public JPasswordField getTxtPass() {

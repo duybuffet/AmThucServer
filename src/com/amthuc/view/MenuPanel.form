@@ -27,7 +27,7 @@
           <Component id="btnTable" alignment="0" max="32767" attributes="0"/>
           <Component id="btnLogout" max="32767" attributes="0"/>
           <Component id="btnOrder" alignment="0" max="32767" attributes="0"/>
-          <Component id="btnUser" alignment="0" max="32767" attributes="0"/>
+          <Component id="btnUser" alignment="0" pref="100" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -42,7 +42,7 @@
               <Component id="btnTable" min="-2" pref="40" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnLogout" min="-2" pref="40" max="-2" attributes="0"/>
-              <EmptySpace pref="82" max="32767" attributes="0"/>
+              <EmptySpace pref="376" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

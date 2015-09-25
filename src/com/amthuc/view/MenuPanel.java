@@ -82,7 +82,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
             .addComponent(btnTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnUser, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,7 +96,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
                 .addComponent(btnTable, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(376, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -152,7 +152,6 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
         loginPanel = new LoginPanel();
         userPanel = new UserPanel();
         categoryPanel = new CategoryPanel();
-        dishPanel = new DishPanel();
 
         serverFrame.getMainSplitPane().setRightComponent(loginPanel);
         serverFrame.getMainSplitPane().setLeftComponent(null);
@@ -166,7 +165,6 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
     }
 
     private ServerFrame serverFrame;
-    private DishPanel dishPanel;
     private LoginPanel loginPanel;
     private UserPanel userPanel;
     private CategoryPanel categoryPanel;
