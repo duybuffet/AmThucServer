@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<Tables>
+    <Table ID="1">
+        <Name>Bàn 1</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="2">
+        <Name>Bàn 2</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="3">
+        <Name>Bàn 3</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="4">
+        <Name>Bàn 4</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="5">
+        <Name>Bàn 5</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="6">
+        <Name>Bàn 6</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="7">
+        <Name>Bàn 7</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="8">
+        <Name>Bàn 8</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="9">
+        <Name>Bàn 9</Name>
+        <Floor>1</Floor>
+        <Type>2</Type>
+    </Table>
+    <Table ID="10">
+        <Name>Bàn 10</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="11">
+        <Name>Bàn 11</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="12">
+        <Name>Bàn 12</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="13">
+        <Name>Bàn 13</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="14">
+        <Name>Bàn 14</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="15">
+        <Name>Bàn 15</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="16">
+        <Name>Bàn 16</Name>
+        <Floor>3</Floor>
+        <Type>8</Type>
+    </Table>
+    <Table ID="17">
+        <Name>Bàn 17</Name>
+        <Floor>3</Floor>
+        <Type>8</Type>
+    </Table>
+</Tables>
