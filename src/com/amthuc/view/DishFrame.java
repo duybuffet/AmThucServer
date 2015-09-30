@@ -7,6 +7,7 @@ package com.amthuc.view;
 
 import com.amthuc.dao.DishDAO;
 import com.amthuc.dao.UserDAO;
+import com.amthuc.model.Category;
 import com.amthuc.model.Dish;
 import com.amthuc.model.User;
 import com.amthuc.view.CategoryPanel;
@@ -24,13 +25,18 @@ import javax.swing.table.DefaultTableModel;
  * @author Pia
  */
 public class DishFrame extends javax.swing.JFrame {
-
+    private int cate_id;
+    private String cate_name;
     /**
      * Creates new form Dish
      */
     public DishFrame() {
         initComponents();
+        cate_id = CategoryPanel.c_id;
+        cate_name = CategoryPanel.c_name;
+        txtCategory.setText(cate_name);
         initTable();
+        initCbo();
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
@@ -63,7 +69,6 @@ public class DishFrame extends javax.swing.JFrame {
         txtId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(879, 600));
 
         tblDish.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -88,9 +93,19 @@ public class DishFrame extends javax.swing.JFrame {
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Mã");
@@ -104,7 +119,11 @@ public class DishFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Đơn vị tính");
 
-        cbbUnit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbUnit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbUnitActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Danh mục");
@@ -188,8 +207,80 @@ public class DishFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        if (txtName.getText().toString().trim() != null && txtPrice.getText().toString().trim() != null && txtCategory.getText().toString().trim() != null) {
+            try {
+                DishDAO dao = new DishDAO();
+                Dish dish = new Dish();
+                dish.setName(txtName.getText().toString().trim());
+                dish.setPrice(Integer.parseInt(txtPrice.getText().toString().trim()));
+                dish.setCategory(new Category(cate_id));
+                dish.setUnit(cbbUnit.getSelectedItem().toString());
+                int insert = dao.insert(dish);
+                if (insert == 1) {
+                    txtId.setText("");
+                    txtName.setText("");
+                    txtPrice.setText("");
+                    cbbUnit.setSelectedIndex(1);
+                    initTable();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void cbbUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbUnitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbUnitActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (txtId.getText().toString().trim() != null && txtName.getText().toString().trim() != null && txtPrice.getText().toString().trim() != null && txtCategory.getText().toString().trim() != null) {
+            try {
+                DishDAO dao = new DishDAO();
+                Dish dish = new Dish();
+                dish.setId(Integer.parseInt(txtId.getText().toString().trim()));
+                dish.setName(txtName.getText().toString().trim());
+                dish.setPrice(Float.parseFloat(txtPrice.getText().toString().trim()));
+                dish.setCategory(new Category(cate_id));
+                dish.setUnit(cbbUnit.getSelectedItem().toString());
+                int update = dao.update(dish);
+                if (update == 1) {
+                    txtId.setText("");
+                    txtName.setText("");
+                    txtPrice.setText("");
+                    cbbUnit.setSelectedIndex(1);
+                    initTable();
+                }
+                
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (txtId.getText().toString().trim() != null) {
+            try {
+                DishDAO dao = new DishDAO();
+                int delete = dao.delete(Integer.parseInt(txtId.getText().toString().trim()));
+                if (delete == 1) {
+                    txtId.setText("");
+                    txtName.setText("");
+                    txtPrice.setText("");
+                    cbbUnit.setSelectedIndex(0);
+                    initTable();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,7 +321,7 @@ public class DishFrame extends javax.swing.JFrame {
         try {
             DishDAO dao = new DishDAO();
             ArrayList<Dish> listDish = new ArrayList<>();
-            listDish = (ArrayList<Dish>) dao.getAll();
+            listDish = (ArrayList<Dish>) dao.getByCategory(cate_id);
             Vector tblRecords = new Vector();
             Vector tblTitle = new Vector();
             tblTitle.add("Mã");
@@ -253,8 +344,9 @@ public class DishFrame extends javax.swing.JFrame {
                     int row = tblDish.getSelectedRow();
                     txtId.setText(tblDish.getValueAt(row, 0).toString());
                     txtName.setText(tblDish.getValueAt(row, 1).toString());
-//                    txtFullname.setText(tblDish.getValueAt(row, 2).toString());
-//                    txtPhone.setText(tblDish.getValueAt(row, 3).toString());
+                    txtCategory.setText(cate_name);
+                    txtPrice.setText(tblDish.getValueAt(row, 3).toString());
+                    cbbUnit.setSelectedItem(tblDish.getValueAt(row, 2).toString());
                 }
             });
         } catch (ClassNotFoundException ex) {
@@ -281,4 +373,10 @@ public class DishFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;
     // End of variables declaration//GEN-END:variables
+
+    private void initCbo() {
+        cbbUnit.addItem("Bát");
+        cbbUnit.addItem("Đĩa");
+        cbbUnit.addItem("Rổ");
+    }
 }

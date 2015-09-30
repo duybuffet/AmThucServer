@@ -5,17 +5,31 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.OrderDAO;
+import com.amthuc.dao.UserDAO;
+import com.amthuc.model.Order;
+import com.amthuc.model.User;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pia
  */
 public class OrderPanel extends javax.swing.JPanel {
-
+    public static int orderID = -1;
     /**
      * Creates new form OrderPanel
      */
     public OrderPanel() {
         initComponents();
+        initTable();
     }
 
     /**
@@ -95,10 +109,52 @@ public class OrderPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOrderDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderDetailsActionPerformed
-        // TODO add your handling code here:
+        if(orderID != -1){
+            new OrderDetailsFrame().setVisible(true);
+        }
     }//GEN-LAST:event_btnOrderDetailsActionPerformed
 
-
+    private void initTable() {
+        try {
+            
+            OrderDAO dao = new OrderDAO();
+            ArrayList<Order> listOrder = new ArrayList<>();
+            listOrder = (ArrayList<Order>) dao.getAll();
+            Vector tblRecords = new Vector();
+            Vector tblTitle = new Vector();
+            tblTitle.add("Mã");
+            tblTitle.add("Ngày giờ đặt");
+            tblTitle.add("Bàn");
+            tblTitle.add("Tổng hóa đơn");
+            tblTitle.add("Chiết khấu");
+            tblTitle.add("Trạng thái");
+            tblTitle.add("Nhân viên phục vụ");
+            for (Order lc : listOrder) {
+                Vector record = new Vector();
+                record.add(lc.getId());
+                record.add(lc.getItems());
+                record.add(lc.getOrderTable());
+                record.add(lc.getTotalCost());
+                record.add(lc.getDiscount());
+                record.add(lc.getStatus());
+                record.add(lc.getDiscount());
+                tblRecords.add(record);
+            }
+            
+            tblOrder.setModel(new DefaultTableModel(tblRecords, tblTitle));
+            tblOrder.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    int row = tblOrder.getSelectedRow();
+                    orderID = Integer.parseInt(tblOrder.getValueAt(row, 0).toString());
+                }
+            });
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOrderDetails;
     private javax.swing.JLabel jLabel1;

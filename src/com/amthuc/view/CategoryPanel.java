@@ -22,7 +22,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Pia
  */
 public class CategoryPanel extends javax.swing.JPanel {
-
+    public static int c_id = -1;
+    public static String c_name;
     /**
      * Creates new form CategoryPanel
      */
@@ -237,7 +238,9 @@ public class CategoryPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnOpenDishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenDishActionPerformed
-        new DishFrame().setVisible(true);
+        if (c_id != -1) {
+            new DishFrame().setVisible(true);
+        }
     }//GEN-LAST:event_btnOpenDishActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -334,6 +337,8 @@ public class CategoryPanel extends javax.swing.JPanel {
                     txtId.setText(tblCategory.getValueAt(row, 0).toString());
                     txtName.setText(tblCategory.getValueAt(row, 1).toString());
                     txtDesc.setText(tblCategory.getValueAt(row, 2).toString());
+                    c_id = Integer.parseInt(tblCategory.getValueAt(row, 0).toString());
+                    c_name = tblCategory.getValueAt(row, 1).toString();
                 }
             });
         } catch (ClassNotFoundException ex) {

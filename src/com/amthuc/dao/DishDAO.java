@@ -39,7 +39,7 @@ public class DishDAO {
     }
     
     public List<Dish> getByCategory(int categoryId) throws ClassNotFoundException, SQLException {
-        List<Dish> result = null;
+        List<Dish> result = new ArrayList<>();
         Dish dish = null;
         String query = "SELECT * FROM tbl_dish WHERE category_id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
@@ -78,17 +78,17 @@ public class DishDAO {
         return dish;
     }
     
-    public void insert(Dish dish) throws ClassNotFoundException, SQLException {
+    public int insert(Dish dish) throws ClassNotFoundException, SQLException {
         String query = "INSERT INTO tbl_dish (name,price,unit,category_id) VALUES(?,?,?,?)";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setString(1, dish.getName());
         ps.setDouble(2, dish.getPrice());
         ps.setString(3, dish.getUnit());
         ps.setInt(4, dish.getCategory().getId());
-        ps.executeUpdate();
+        return ps.executeUpdate();
     }
     
-    public void update(Dish dish) throws ClassNotFoundException, SQLException {
+    public int update(Dish dish) throws ClassNotFoundException, SQLException {
         String query = "UPDATE tbl_dish SET name = ?,price = ?,unit = ?,category_id = ? WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setString(1, dish.getName());
@@ -96,13 +96,13 @@ public class DishDAO {
         ps.setString(3, dish.getUnit());
         ps.setInt(4, dish.getCategory().getId());
         ps.setInt(5, dish.getId());
-        ps.executeUpdate();
+        return ps.executeUpdate();
     }
     
-    public void delete(int id) throws ClassNotFoundException, SQLException {
+    public int delete(int id) throws ClassNotFoundException, SQLException {
         String query = "DELETE FROM tbl_dish WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, id);
-        ps.executeUpdate();
+        return ps.executeUpdate();
     }
 }
