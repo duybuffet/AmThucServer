@@ -137,7 +137,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
         } else if (btn == btnTable) {
 
         } else if (btn == btnOrder) {
-
+            this.serverFrame.getMainSplitPane().setRightComponent(orderPanel);
         } else if (btn == btnLogout) {
             this.serverFrame.getMainSplitPane().setRightComponent(loginPanel);
             this.serverFrame.getMainSplitPane().setLeftComponent(null);
@@ -152,6 +152,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
         loginPanel = new LoginPanel();
         userPanel = new UserPanel();
         categoryPanel = new CategoryPanel();
+        orderPanel = new OrderPanel();
 
         serverFrame.getMainSplitPane().setRightComponent(loginPanel);
         serverFrame.getMainSplitPane().setLeftComponent(null);
@@ -168,4 +169,5 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
     private LoginPanel loginPanel;
     private UserPanel userPanel;
     private CategoryPanel categoryPanel;
+    private OrderPanel orderPanel;
 }
