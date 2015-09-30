@@ -5,17 +5,33 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.DishDAO;
+import com.amthuc.dao.OrderDetailsDAO;
+import com.amthuc.model.OrderDetails;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pia
  */
 public class OrderDetailsFrame extends javax.swing.JFrame {
-
+    private int o_id;
     /**
      * Creates new form OrderDetailsForm
      */
     public OrderDetailsFrame() {
         initComponents();
+        o_id = OrderPanel.orderID;
+        initTable();
+        setVisible(true);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -234,7 +250,43 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    private void initTable() {
+        try {
+            
+            OrderDetailsDAO dao = new OrderDetailsDAO();
+            ArrayList<OrderDetails> listOrder = new ArrayList<>();
+            listOrder = (ArrayList<OrderDetails>) dao.getByOrder(o_id);
+            Vector tblRecords = new Vector();
+            Vector tblTitle = new Vector();
+            tblTitle.add("Món");
+            tblTitle.add("Giá");
+            tblTitle.add("Số lượng");
+            for (OrderDetails lc : listOrder) {
+                Vector record = new Vector();
+                record.add(lc.getId());
+                
+                DishDAO dDao = new DishDAO();
+                String name = dDao.get(lc.getDish().getId()).getName();
+                
+                record.add(name);
+                record.add(lc.getDisplayPrice());
+                record.add(lc.getQuantity());
+                tblRecords.add(record);
+            }
+            
+            tblOrder.setModel(new DefaultTableModel(tblRecords, tblTitle));
+            tblOrder.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    int row = tblOrder.getSelectedRow();
+                }
+            });
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
