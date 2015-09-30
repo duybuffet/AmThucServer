@@ -33,7 +33,6 @@ public class DishFrame extends javax.swing.JFrame {
         initTable();
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         
     }
 
@@ -228,7 +227,6 @@ public class DishFrame extends javax.swing.JFrame {
 //        });
 //    }
     private void initTable() {
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaa");
         try {
             DishDAO dao = new DishDAO();
             ArrayList<Dish> listDish = new ArrayList<>();

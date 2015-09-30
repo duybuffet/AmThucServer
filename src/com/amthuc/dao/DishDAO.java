@@ -34,7 +34,6 @@ public class DishDAO {
             dish.setUnit(rs.getString("unit"));
             dish.setCategory(new Category(rs.getInt("category_id")));
             result.add(dish);
-            System.out.println("111111111111111");
         }
         return result;
     }
