@@ -34,8 +34,6 @@ public class OrderPanelFloor3 extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel4 = new javax.swing.JLabel();
-        lblPre = new javax.swing.JLabel();
-        lblNext = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -47,10 +45,6 @@ public class OrderPanelFloor3 extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setText("Tầng 3");
-
-        lblPre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/preFloor1.png"))); // NOI18N
-
-        lblNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/nextFloor1.png"))); // NOI18N
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/rsz_8-0.png"))); // NOI18N
 
@@ -92,11 +86,6 @@ public class OrderPanelFloor3 extends javax.swing.JPanel {
                         .addComponent(jLabel22)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblNext)
-                        .addGap(38, 38, 38))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(113, 113, 113)
                         .addComponent(jLabel10)
@@ -126,11 +115,7 @@ public class OrderPanelFloor3 extends javax.swing.JPanel {
                             .addComponent(jLabel1)
                             .addComponent(jLabel17)
                             .addComponent(jLabel16))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblPre)
-                            .addComponent(lblNext))
-                        .addGap(26, 26, 26))))
+                        .addGap(26, 208, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -145,7 +130,5 @@ public class OrderPanelFloor3 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel lblNext;
-    private javax.swing.JLabel lblPre;
     // End of variables declaration//GEN-END:variables
 }
