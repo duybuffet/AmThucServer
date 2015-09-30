@@ -91,7 +91,15 @@ public class CategoryPanel extends javax.swing.JPanel {
             new String [] {
                 "Mã", "Tên", "Mô tả"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblCategory);
 
         txtDesc.setColumns(20);
