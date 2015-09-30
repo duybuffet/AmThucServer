@@ -5,7 +5,12 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.UserDAO;
+import com.amthuc.model.User;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -64,6 +69,11 @@ public class LoginPanel extends javax.swing.JPanel {
 
         btnLogin.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
         add(btnLogin);
         btnLogin.setBounds(440, 320, 100, 30);
 
@@ -71,6 +81,29 @@ public class LoginPanel extends javax.swing.JPanel {
         add(jLabel4);
         jLabel4.setBounds(0, 0, 980, 510);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        User user = new User();
+        if (this.getTxtUName().toString().trim() != null && this.getTxtPass().toString().trim() != null) {
+            try {
+                user.setUsername(this.getTxtUName().toString().trim());
+                user.setPassword(this.getTxtPass().toString().trim());
+                
+                UserDAO uDao = new UserDAO();
+                User uLogin = uDao.login(user);
+                if (uLogin != null) {
+                    
+                }else{
+                    
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     public JPasswordField getTxtPass() {
         return txtPass;

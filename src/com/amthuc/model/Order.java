@@ -28,6 +28,10 @@ public class Order {
     public Order() {
     }
 
+    public Order(int id) {
+        this.id = id;
+    }
+    
     public Order(String orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, String payTime, int discount, User waiter) {
         this.orderTable = orderTable;
         this.description = description;

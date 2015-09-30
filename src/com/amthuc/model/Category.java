@@ -23,6 +23,10 @@ public class Category {
     public Category() {
     }
 
+    public Category(int id) {
+        this.id = id;
+    }
+    
     public Category(int id, String name, String description, boolean isEnable, String image) {
         this.id = id;
         this.name = name;

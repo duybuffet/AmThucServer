@@ -18,7 +18,7 @@ public class DBConnect {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/amthuc";
     private static final String DBUser = "root";
-    private static final String DBPass = "123456";
+    private static final String DBPass = "";
     private static Connection conn = null;
 
     private DBConnect() {

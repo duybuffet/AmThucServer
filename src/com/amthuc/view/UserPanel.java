@@ -5,6 +5,21 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.CategoryDAO;
+import com.amthuc.dao.UserDAO;
+import com.amthuc.model.Category;
+import com.amthuc.model.User;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pia
@@ -16,6 +31,7 @@ public class UserPanel extends javax.swing.JPanel {
      */
     public UserPanel() {
         initComponents();
+        initTable();
     }
 
     /**
@@ -28,7 +44,7 @@ public class UserPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblUser = new javax.swing.JTable();
         btnAdd = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
@@ -42,7 +58,7 @@ public class UserPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         txtPhone = new javax.swing.JTextField();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -50,7 +66,7 @@ public class UserPanel extends javax.swing.JPanel {
                 "Mã", "Tên truy cập", "Họ tên", "Số điện thoại"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblUser);
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnAdd.setText("Thêm");
@@ -62,15 +78,31 @@ public class UserPanel extends javax.swing.JPanel {
 
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("NGƯỜI DÙNG");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Mã");
+
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Tài khoản");
@@ -129,19 +161,21 @@ public class UserPanel extends javax.swing.JPanel {
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -154,10 +188,172 @@ public class UserPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+       if (txtName.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null) {
+            try {
+                UserDAO dao = new UserDAO();
+                User user = new User();
+                user.setUsername(txtName.getText().toString().trim());
+                user.setFullName(txtFullname.getText().toString().trim());
+                user.setPhone(txtPhone.getText().toString().trim());
+                boolean insert = dao.insert(user);
+                if (insert) {
+                    txtName.setText("");
+                    txtId.setText("");
+                    txtFullname.setText("");
+                    txtPhone.setText("");
+                    initTable();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        
+    }//GEN-LAST:event_txtIdActionPerformed
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (txtId.getText().toString().trim() != null && txtName.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null) {
+            try {
+                UserDAO dao = new UserDAO();
+                User user = new User();
+                user.setId(Integer.parseInt(txtId.getText().toString().trim()));
+                user.setUsername(txtName.getText().toString().trim());
+                user.setFullName(txtFullname.getText().toString().trim());
+                user.setPhone(txtPhone.getText().toString().trim());
+                int insert = dao.update(user);
+                if (insert == 1) {
+                    txtName.setText("");
+                    txtId.setText("");
+                    txtFullname.setText("");
+                    txtPhone.setText("");
+                    initTable();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (txtId.getText().toString().trim() != null) {
+            try {
+                UserDAO dao = new UserDAO();
+                int delete = dao.delete(Integer.parseInt(txtId.getText().toString().trim()));
+                if(delete == 1){
+                    txtName.setText("");
+                    txtId.setText("");
+                    txtFullname.setText("");
+                    txtPhone.setText("");
+                    initTable();
+                    
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    public JButton getBtnAdd() {
+        return btnAdd;
+    }
+
+    public void setBtnAdd(JButton btnAdd) {
+        this.btnAdd = btnAdd;
+    }
+
+    public JButton getBtnDelete() {
+        return btnDelete;
+    }
+
+    public void setBtnDelete(JButton btnDelete) {
+        this.btnDelete = btnDelete;
+    }
+
+    public JButton getBtnUpdate() {
+        return btnUpdate;
+    }
+
+    public void setBtnUpdate(JButton btnUpdate) {
+        this.btnUpdate = btnUpdate;
+    }
+
+    public JTextField getTxtFullname() {
+        return txtFullname;
+    }
+
+    public void setTxtFullname(JTextField txtFullname) {
+        this.txtFullname = txtFullname;
+    }
+
+    public JTextField getTxtId() {
+        return txtId;
+    }
+
+    public void setTxtId(JTextField txtId) {
+        this.txtId = txtId;
+    }
+
+    public JTextField getTxtName() {
+        return txtName;
+    }
+
+    public void setTxtName(JTextField txtName) {
+        this.txtName = txtName;
+    }
+
+    public JTextField getTxtPhone() {
+        return txtPhone;
+    }
+
+    public void setTxtPhone(JTextField txtPhone) {
+        this.txtPhone = txtPhone;
+    }
+    private void initTable() {
+        try {
+            
+            UserDAO dao = new UserDAO();
+            ArrayList<User> listUser = new ArrayList<>();
+            listUser = (ArrayList<User>) dao.getAll();
+            Vector tblRecords = new Vector();
+            Vector tblTitle = new Vector();
+            tblTitle.add("Mã");
+            tblTitle.add("Tên truy cập");
+            tblTitle.add("Họ và tên");
+            tblTitle.add("Số điệnt thoại");
+            for (User lc : listUser) {
+                Vector record = new Vector();
+                record.add(lc.getId());
+                record.add(lc.getUsername());
+                record.add(lc.getFullName());
+                record.add(lc.getPhone());
+                tblRecords.add(record);
+            }
+            
+            tblUser.setModel(new DefaultTableModel(tblRecords, tblTitle));
+            tblUser.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    int row = tblUser.getSelectedRow();
+                    txtId.setText(tblUser.getValueAt(row, 0).toString());
+                    txtName.setText(tblUser.getValueAt(row, 1).toString());
+                    txtFullname.setText(tblUser.getValueAt(row, 2).toString());
+                    txtPhone.setText(tblUser.getValueAt(row, 3).toString());
+                }
+            });
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
@@ -168,7 +364,7 @@ public class UserPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblUser;
     private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;

@@ -5,6 +5,18 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.CategoryDAO;
+import com.amthuc.model.Category;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pia
@@ -16,6 +28,7 @@ public class CategoryPanel extends javax.swing.JPanel {
      */
     public CategoryPanel() {
         initComponents();
+        initTable();
     }
 
     /**
@@ -46,6 +59,11 @@ public class CategoryPanel extends javax.swing.JPanel {
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnAdd.setText("Thêm");
@@ -60,6 +78,11 @@ public class CategoryPanel extends javax.swing.JPanel {
 
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         tblCategory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -183,14 +206,78 @@ public class CategoryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        if (txtName.getText().toString().trim() != null && txtDesc.getText().toString().trim() != null) {
+            try {
+                CategoryDAO categoryDAO = new CategoryDAO();
+                Category cate = new Category();
+                cate.setName(txtName.getText().toString().trim());
+                cate.setDescription(txtDesc.getText().toString().trim());
+                cate.setImage("day la image");
+                int insert = categoryDAO.insert(cate);
+                if (insert == 1) {
+                    txtName.setText("");
+                    txtId.setText("");
+                    txtDesc.setText("");
+                    initTable();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnOpenDishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenDishActionPerformed
-        // TODO add your handling code here:
-        new view.DishFrame().setVisible(true);
+        new DishFrame().setVisible(true);
     }//GEN-LAST:event_btnOpenDishActionPerformed
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if (txtId.getText().toString().trim() != null && txtName.getText().toString().trim() != null && txtDesc.getText().toString().trim() != null) {
+            try {
+                CategoryDAO categoryDAO = new CategoryDAO();
+                Category cate = new Category();
+                cate.setId(Integer.parseInt(txtId.getText().toString().trim()));
+                cate.setName(txtName.getText().toString().trim());
+                cate.setDescription(txtDesc.getText().toString().trim());
+                cate.setImage("day la image");
+                int update = categoryDAO.update(cate);
+                if(update == 1){
+                    txtName.setText("");
+                    txtId.setText("");
+                    txtDesc.setText("");
+                    initTable();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (txtId.getText().toString().trim() != null) {
+            try {
+                CategoryDAO categoryDAO = new CategoryDAO();
+                int delete = categoryDAO.delete(Integer.parseInt(txtId.getText().toString().trim()));
+                if(delete == 1){
+                    txtName.setText("");
+                    txtId.setText("");
+                    txtDesc.setText("");
+                    initTable();
+                    
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -210,4 +297,41 @@ public class CategoryPanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
+
+    private void initTable() {
+        try {
+            
+            CategoryDAO dao = new CategoryDAO();
+            ArrayList<Category> listCate = new ArrayList<>();
+            listCate = (ArrayList<Category>) dao.getAll();
+            System.out.println(""+listCate.size());
+            Vector tblRecords = new Vector();
+            Vector tblTitle = new Vector();
+            tblTitle.add("ID");
+            tblTitle.add("Name");
+            tblTitle.add("Description");
+            for (Category lc : listCate) {
+                Vector record = new Vector();
+                record.add(lc.getId());
+                record.add(lc.getName());
+                record.add(lc.getDescription());
+                tblRecords.add(record);
+            }
+            
+            tblCategory.setModel(new DefaultTableModel(tblRecords, tblTitle));
+            tblCategory.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    int row = tblCategory.getSelectedRow();
+                    txtId.setText(tblCategory.getValueAt(row, 0).toString());
+                    txtName.setText(tblCategory.getValueAt(row, 1).toString());
+                    txtDesc.setText(tblCategory.getValueAt(row, 2).toString());
+                }
+            });
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

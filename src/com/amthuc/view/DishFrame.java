@@ -3,7 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package com.amthuc.view;
+
+import com.amthuc.dao.DishDAO;
+import com.amthuc.dao.UserDAO;
+import com.amthuc.model.Dish;
+import com.amthuc.model.User;
+import com.amthuc.view.CategoryPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,8 +30,11 @@ public class DishFrame extends javax.swing.JFrame {
      */
     public DishFrame() {
         initComponents();
+        initTable();
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        
     }
 
     /**
@@ -210,7 +227,44 @@ public class DishFrame extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-
+    private void initTable() {
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+        try {
+            DishDAO dao = new DishDAO();
+            ArrayList<Dish> listDish = new ArrayList<>();
+            listDish = (ArrayList<Dish>) dao.getAll();
+            Vector tblRecords = new Vector();
+            Vector tblTitle = new Vector();
+            tblTitle.add("Mã");
+            tblTitle.add("Tên");
+            tblTitle.add("Đơn vị tính");
+            tblTitle.add("Giá");
+            for (Dish lc : listDish) {
+                Vector record = new Vector();
+                record.add(lc.getId());
+                record.add(lc.getName());
+                record.add(lc.getUnit());
+                record.add(lc.getPrice());
+                tblRecords.add(record);
+            }
+            
+            tblDish.setModel(new DefaultTableModel(tblRecords, tblTitle));
+            tblDish.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    int row = tblDish.getSelectedRow();
+                    txtId.setText(tblDish.getValueAt(row, 0).toString());
+                    txtName.setText(tblDish.getValueAt(row, 1).toString());
+//                    txtFullname.setText(tblDish.getValueAt(row, 2).toString());
+//                    txtPhone.setText(tblDish.getValueAt(row, 3).toString());
+                }
+            });
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;

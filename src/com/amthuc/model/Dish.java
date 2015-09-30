@@ -23,6 +23,10 @@ public class Dish {
     public Dish() {
     }
 
+    public Dish(int id) {
+        this.id = id;
+    }
+    
     public Dish(int id, String name, String description, boolean isEnable, float price, String unit, int discount, String image) {
         this.id = id;
         this.name = name;

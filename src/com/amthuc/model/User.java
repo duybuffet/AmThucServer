@@ -16,16 +16,19 @@ public class User {
     private String password;
     private int userLevel;
     private int status;
-
+    private String fullName;
+    private String phone;
     public User() {
     }
 
-    public User(int id, String username, String password, int userLevel, int status) {
+    public User(int id, String username, String password, int userLevel, int status, String fullName, String phone) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.userLevel = userLevel;
         this.status = status;
+        this.fullName = fullName;
+        this.phone = phone;
     }
 
     public User(int id, String username, String password, int userLevel) {
@@ -35,6 +38,14 @@ public class User {
         this.userLevel = userLevel;
     }
 
+    public User(int id, String username, String password, int userLevel, int status) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.userLevel = userLevel;
+        this.status = status;
+    }
+    
     public int getId() {
         return id;
     }
@@ -75,6 +86,23 @@ public class User {
         this.status = status;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
+    
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", username=" + username + ", userLevel=" + userLevel + '}';
