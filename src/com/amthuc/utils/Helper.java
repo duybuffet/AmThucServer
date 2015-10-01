@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
  */
 public class Helper {
 
-    public static List<Table> loadTables(String fileName) throws ParserConfigurationException,
+    public static List<Table> loadTables(String fileName, int _floor) throws ParserConfigurationException,
             SAXException, IOException {
         List<Table> lst = new ArrayList<>();
 
@@ -61,8 +61,10 @@ public class Helper {
                         .item(0).getChildNodes().item(0).getNodeValue());
 
                 
-
-                lst.add(new Table(ID, name, floor, type));
+                if (_floor == floor) {
+                    lst.add(new Table(ID, name, floor, type));  
+                }
+                
             }
         }
 

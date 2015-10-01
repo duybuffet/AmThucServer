@@ -5,11 +5,13 @@
  */
 package com.amthuc.model;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Pia
  */
-public class Table {
+public class Table extends JLabel {
 
     private int id;
     private String name;

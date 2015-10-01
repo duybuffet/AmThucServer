@@ -54,7 +54,7 @@ and open the template in the editor.
     </Table>
     <Table ID="10">
         <Name>Bàn 10</Name>
-        <Floor>2</Floor>
+        <Floor>1</Floor>
         <Type>4</Type>
     </Table>
     <Table ID="11">
@@ -84,11 +84,31 @@ and open the template in the editor.
     </Table>
     <Table ID="16">
         <Name>Bàn 16</Name>
-        <Floor>3</Floor>
-        <Type>8</Type>
+        <Floor>2</Floor>
+        <Type>4</Type>
     </Table>
     <Table ID="17">
         <Name>Bàn 17</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="18">
+        <Name>Bàn 18</Name>
+        <Floor>2</Floor>
+        <Type>4</Type>
+    </Table>
+    <Table ID="19">
+        <Name>Bàn 19</Name>
+        <Floor>3</Floor>
+        <Type>8</Type>
+    </Table>
+    <Table ID="20">
+        <Name>Bàn 20</Name>
+        <Floor>3</Floor>
+        <Type>8</Type>
+    </Table>
+    <Table ID="21">
+        <Name>Bàn 21</Name>
         <Floor>3</Floor>
         <Type>8</Type>
     </Table>

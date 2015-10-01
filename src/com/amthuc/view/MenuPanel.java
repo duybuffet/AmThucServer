@@ -1,9 +1,20 @@
 package com.amthuc.view;
 
+import com.amthuc.model.Table;
+import com.amthuc.utils.GLOBAL;
+import com.amthuc.utils.Helper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +25,7 @@ import javax.swing.JOptionPane;
  *
  * @author ASUS_PC
  */
-public class MenuPanel extends javax.swing.JPanel implements ActionListener {
+public class MenuPanel extends javax.swing.JPanel implements ActionListener, MouseListener {
 
     /**
      * Creates new form MenuPanel
@@ -135,7 +146,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
         } else if (btn == btnUser) {
             this.serverFrame.getMainSplitPane().setRightComponent(userPanel);
         } else if (btn == btnTable) {
-
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
         } else if (btn == btnOrder) {
             this.serverFrame.getMainSplitPane().setRightComponent(orderPanel);
         } else if (btn == btnLogout) {
@@ -149,10 +160,24 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
     }
 
     private void init() {
+        try {
+            lstTableFloor1 = Helper.loadTables("config_table.xml", GLOBAL.AREA.FLOOR_1);
+            lstTableFloor2 = Helper.loadTables("config_table.xml", GLOBAL.AREA.FLOOR_2);
+            lstTableFloor3 = Helper.loadTables("config_table.xml", GLOBAL.AREA.FLOOR_3);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         loginPanel = new LoginPanel();
         userPanel = new UserPanel();
         categoryPanel = new CategoryPanel();
         orderPanel = new OrderPanel();
+        tableFloor1Panel = new TableFloor1Panel(lstTableFloor1);
+        tableFloor2Panel = new TableFloor2Panel(lstTableFloor2);
+        tableFloor3Panel = new TableFloor3Panel(lstTableFloor3);
 
         serverFrame.getMainSplitPane().setRightComponent(loginPanel);
         serverFrame.getMainSplitPane().setLeftComponent(null);
@@ -163,11 +188,62 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener {
         this.btnUser.addActionListener(this);
         this.btnLogout.addActionListener(this);
         this.loginPanel.addBtnLoginListener(this);
+        
+        this.tableFloor1Panel.getLblNext().addMouseListener(this);
+        this.tableFloor2Panel.getLblNext().addMouseListener(this);
+        this.tableFloor3Panel.getLblNext().addMouseListener(this);
+        this.tableFloor1Panel.getLblPre().addMouseListener(this);
+        this.tableFloor2Panel.getLblPre().addMouseListener(this);
+        this.tableFloor3Panel.getLblPre().addMouseListener(this);
     }
-
+    
+    private List<Table> lstTableFloor1;
+    private List<Table> lstTableFloor2;
+    private List<Table> lstTableFloor3;
     private ServerFrame serverFrame;
     private LoginPanel loginPanel;
     private UserPanel userPanel;
     private CategoryPanel categoryPanel;
     private OrderPanel orderPanel;
+    private TableFloor2Panel tableFloor2Panel;
+    private TableFloor1Panel tableFloor1Panel;
+    private TableFloor3Panel tableFloor3Panel;
+
+    @Override
+    public void mouseClicked(MouseEvent e) {       
+        JLabel lbl = (JLabel) e.getComponent();
+        if (lbl == tableFloor1Panel.getLblNext()) {
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor2Panel);
+        } else if (lbl == tableFloor1Panel.getLblPre()) {
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor3Panel);
+        } else if (lbl == tableFloor2Panel.getLblNext()) {
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor3Panel);
+        } else if (lbl == tableFloor2Panel.getLblPre()) {
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
+        } else if (lbl == tableFloor3Panel.getLblNext()) {
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
+        } else if (lbl == tableFloor3Panel.getLblPre()) {
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor2Panel);
+        } 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
