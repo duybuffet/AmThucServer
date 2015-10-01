@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderDetailsFrame extends javax.swing.JFrame {
     private int o_id;
+    private ArrayList<OrderDetails> listOrder;
     /**
      * Creates new form OrderDetailsForm
      */
@@ -254,7 +255,7 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
         try {
             
             OrderDetailsDAO dao = new OrderDetailsDAO();
-            ArrayList<OrderDetails> listOrder = new ArrayList<>();
+            listOrder = new ArrayList<>();
             listOrder = (ArrayList<OrderDetails>) dao.getByOrder(o_id);
             Vector tblRecords = new Vector();
             Vector tblTitle = new Vector();
@@ -279,6 +280,12 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     int row = tblOrder.getSelectedRow();
+                    OrderDetails details = listOrder.get(row);
+                    txtId.setText(tblOrder.getValueAt(row, 0).toString());
+                    txtOrderTime.setText(details.getOrder().getOrderTime());
+                    txtPatryCompleteTime.setText(details.getOrder().getPantryCompleteTime());
+                    txtPaytime.setText(details.getOrder().getPayTime());
+                    txaDesc.setText(details.getDish().getDescription());
                 }
             });
         } catch (ClassNotFoundException ex) {

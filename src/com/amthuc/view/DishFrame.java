@@ -25,8 +25,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Pia
  */
 public class DishFrame extends javax.swing.JFrame {
+
     private int cate_id;
     private String cate_name;
+
     /**
      * Creates new form Dish
      */
@@ -39,7 +41,7 @@ public class DishFrame extends javax.swing.JFrame {
         initCbo();
         setVisible(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
     }
 
     /**
@@ -253,7 +255,7 @@ public class DishFrame extends javax.swing.JFrame {
                     cbbUnit.setSelectedIndex(1);
                     initTable();
                 }
-                
+
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -336,7 +338,7 @@ public class DishFrame extends javax.swing.JFrame {
                 record.add(lc.getPrice());
                 tblRecords.add(record);
             }
-            
+
             tblDish.setModel(new DefaultTableModel(tblRecords, tblTitle));
             tblDish.addMouseListener(new MouseAdapter() {
                 @Override
