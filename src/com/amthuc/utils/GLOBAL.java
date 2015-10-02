@@ -1,5 +1,7 @@
 package com.amthuc.utils;
 
+import java.util.List;
+
 public class GLOBAL {
 
     public static class TO_CLIENT {
@@ -33,4 +35,20 @@ public class GLOBAL {
         public static final int TABLE_4 = 4;
         public static final int TABLE_8 = 8;
     }
+    
+    public static class DISH_UNIT {
+        public static final String DISH = "Đĩa";
+        public static final String CUP = "Cốc";
+        public static final String SMT = "Phần Ăn";
+        public static final String[] DISH_UNIT_DISPLAY = {DISH, CUP, SMT};        
+    }
+    
+    public static class USER_LEVEL {
+        public static final int ADMIN = 2;
+        public static final int CHEF = 1;
+        public static final int WAITER = 0;
+        public static final String[] USER_LEVEL_DISPLAY = {"Bồi bàn", "Bếp", "Quản trị"};
+        
+    }
+        
 }

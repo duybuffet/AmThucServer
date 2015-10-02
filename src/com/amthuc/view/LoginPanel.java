@@ -21,7 +21,7 @@ import javax.swing.JTextField;
  * @author ASUS_PC
  */
 public class LoginPanel extends javax.swing.JPanel {
-
+    public static User userLogin = new User(1, "", "", 2);
     /**
      * Creates new form LoginPanel
      */
@@ -49,37 +49,41 @@ public class LoginPanel extends javax.swing.JPanel {
         setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Login System");
+        jLabel1.setText("Hệ thống quản trị nhà hàng");
         add(jLabel1);
-        jLabel1.setBounds(420, 150, 190, 40);
+        jLabel1.setBounds(330, 140, 390, 40);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setText("Username :");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Tài khoản :");
         add(jLabel2);
         jLabel2.setBounds(330, 230, 90, 20);
+
+        txtUName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add(txtUName);
-        txtUName.setBounds(450, 230, 150, 20);
+        txtUName.setBounds(450, 230, 210, 30);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setText("Password :");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Mật khẩu :");
         add(jLabel3);
-        jLabel3.setBounds(330, 270, 90, 15);
-        add(txtPass);
-        txtPass.setBounds(450, 270, 150, 20);
+        jLabel3.setBounds(330, 300, 90, 17);
 
-        btnLogin.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnLogin.setText("Login");
+        txtPass.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add(txtPass);
+        txtPass.setBounds(450, 290, 210, 30);
+
+        btnLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnLogin.setText("Đăng nhật");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
             }
         });
         add(btnLogin);
-        btnLogin.setBounds(440, 320, 100, 30);
+        btnLogin.setBounds(440, 350, 160, 40);
 
         jLabel4.setForeground(new java.awt.Color(0, 153, 153));
         add(jLabel4);
-        jLabel4.setBounds(0, 0, 980, 510);
+        jLabel4.setBounds(0, 0, 980, 600);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed

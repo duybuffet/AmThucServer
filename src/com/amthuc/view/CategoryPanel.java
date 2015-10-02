@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,8 +23,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Pia
  */
 public class CategoryPanel extends javax.swing.JPanel {
+
     public static int c_id = -1;
     public static String c_name;
+
     /**
      * Creates new form CategoryPanel
      */
@@ -55,11 +58,9 @@ public class CategoryPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        btnUpdate.setText("Sửa");
+        btnUpdate.setText("Cập nhật");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -67,7 +68,7 @@ public class CategoryPanel extends javax.swing.JPanel {
         });
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        btnAdd.setText("Thêm");
+        btnAdd.setText("Thêm mới");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -75,7 +76,7 @@ public class CategoryPanel extends javax.swing.JPanel {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("THỂ LOẠI MÓN ĂN");
+        jLabel1.setText("DANH MỤC MÓN ĂN");
 
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         btnDelete.setText("Xóa");
@@ -124,9 +125,7 @@ public class CategoryPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Mô tả");
 
-        jLabel5.setText("ảnh");
-
-        jButton1.setText("Chọn ảnh");
+        txtId.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -146,15 +145,9 @@ public class CategoryPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(125, 125, 125)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(28, 28, 28)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(91, 91, 91)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel4)
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(41, 41, 41))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -189,19 +182,11 @@ public class CategoryPanel extends javax.swing.JPanel {
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(31, 31, 31))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(jButton1))
-                        .addGap(18, 18, 18)))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,7 +200,8 @@ public class CategoryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if (txtName.getText().toString().trim() != null && txtDesc.getText().toString().trim() != null) {
+        String err = checkForm();
+        if (err.equals("")) {
             try {
                 CategoryDAO categoryDAO = new CategoryDAO();
                 Category cate = new Category();
@@ -228,12 +214,17 @@ public class CategoryPanel extends javax.swing.JPanel {
                     txtId.setText("");
                     txtDesc.setText("");
                     initTable();
+                    showMessage("Thêm mới thành công!");
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             } catch (SQLException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             }
+        } else {
+            showMessage(err);
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -244,62 +235,83 @@ public class CategoryPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOpenDishActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (txtId.getText().toString().trim() != null && txtName.getText().toString().trim() != null && txtDesc.getText().toString().trim() != null) {
-            try {
-                CategoryDAO categoryDAO = new CategoryDAO();
-                Category cate = new Category();
-                cate.setId(Integer.parseInt(txtId.getText().toString().trim()));
-                cate.setName(txtName.getText().toString().trim());
-                cate.setDescription(txtDesc.getText().toString().trim());
-                cate.setImage("day la image");
-                int update = categoryDAO.update(cate);
-                if(update == 1){
-                    txtName.setText("");
-                    txtId.setText("");
-                    txtDesc.setText("");
-                    initTable();
+        String err = checkForm();
+        if (!txtId.getText().toString().trim().equals("")) {
+            if (err.equals("")) {
+                try {
+                    CategoryDAO categoryDAO = new CategoryDAO();
+                    Category cate = new Category();
+                    cate.setId(Integer.parseInt(txtId.getText().toString().trim()));
+                    cate.setName(txtName.getText().toString().trim());
+                    cate.setDescription(txtDesc.getText().toString().trim());
+                    cate.setImage("day la image");
+                    int update = categoryDAO.update(cate);
+                    if (update == 1) {
+                        txtName.setText("");
+                        txtId.setText("");
+                        txtDesc.setText("");
+                        initTable();
+                        showMessage("Cập nhật thành công!");
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
                 }
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                showMessage(err);
             }
+        } else {
+            showMessage("Chưa chọn danh mục nào");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (txtId.getText().toString().trim() != null) {
+        if (!txtId.getText().trim().equals("")) {
             try {
                 CategoryDAO categoryDAO = new CategoryDAO();
                 int delete = categoryDAO.delete(Integer.parseInt(txtId.getText().toString().trim()));
-                if(delete == 1){
+                if (delete == 1) {
                     txtName.setText("");
                     txtId.setText("");
                     txtDesc.setText("");
-                    initTable();  
+                    initTable();
+                    showMessage("Xóa thành công!");
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             } catch (SQLException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             }
+        } else {
+            showMessage("Chưa chọn danh mục nào");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
-    
-    
-    
 
+    private String checkForm() {
+        String error = "";
+        if (txtName.getText().toString().trim().equals("")) {
+            error = "Tên danh mục không được để trống";
+        }
+        return error;
+    }
+
+    private void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnOpenDish;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblCategory;
@@ -310,16 +322,16 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void initTable() {
         try {
-            
+
             CategoryDAO dao = new CategoryDAO();
             ArrayList<Category> listCate = new ArrayList<>();
             listCate = (ArrayList<Category>) dao.getAll();
-            System.out.println(""+listCate.size());
+            System.out.println("" + listCate.size());
             Vector tblRecords = new Vector();
             Vector tblTitle = new Vector();
-            tblTitle.add("ID");
-            tblTitle.add("Name");
-            tblTitle.add("Description");
+            tblTitle.add("Mã");
+            tblTitle.add("Tên danh mục");
+            tblTitle.add("Mô tả");
             for (Category lc : listCate) {
                 Vector record = new Vector();
                 record.add(lc.getId());
@@ -327,7 +339,7 @@ public class CategoryPanel extends javax.swing.JPanel {
                 record.add(lc.getDescription());
                 tblRecords.add(record);
             }
-            
+
             tblCategory.setModel(new DefaultTableModel(tblRecords, tblTitle));
             tblCategory.addMouseListener(new MouseAdapter() {
                 @Override
@@ -342,8 +354,10 @@ public class CategoryPanel extends javax.swing.JPanel {
             });
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
         } catch (SQLException ex) {
             Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
         }
     }
 }

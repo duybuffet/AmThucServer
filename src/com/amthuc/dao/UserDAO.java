@@ -21,12 +21,13 @@ import java.util.logging.Logger;
  */
 public class UserDAO {
 
-    public List<User> getAll() throws ClassNotFoundException, SQLException {
+    public List<User> getAll(int exceptUserId) throws ClassNotFoundException, SQLException {
         List<User> result = new ArrayList<>();
         User user = null;
-        String query = "SELECT * FROM tbl_user";
+        String query = "SELECT * FROM tbl_user WHERE id != ?";
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setInt(1, exceptUserId);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             user = new User();
@@ -34,6 +35,7 @@ public class UserDAO {
             user.setUsername(rs.getString("username"));
             user.setFullName(rs.getString("fullname"));
             user.setPhone(rs.getString("phone"));
+            user.setUserLevel(rs.getInt("user_level"));
             result.add(user);
         }
         return result;
@@ -61,11 +63,12 @@ public class UserDAO {
     public boolean insert(User user) throws ClassNotFoundException, SQLException {
         User u = login(user);
         if (u == null) {
+            System.out.println("User level in dao : " + user.getUserLevel());
             String query = "INSERT INTO tbl_user (username,password,user_level,fullname,phone) VALUES(?,?,?,?,?)";
             PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
             ps.setString(1, user.getUsername());
             ps.setString(2, "123456");
-            ps.setInt(3, 1);
+            ps.setInt(3, user.getUserLevel());
             ps.setString(4, user.getFullName());
             ps.setString(5, user.getPhone());
             ps.executeUpdate();

@@ -54,14 +54,14 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
 
         jPasswordField1.setText("jPasswordField1");
 
-        btnCategory.setText("Category");
+        btnCategory.setText("Danh mục");
         btnCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCategoryActionPerformed(evt);
             }
         });
 
-        btnOrder.setText("Orders");
+        btnOrder.setText("Đơn hàng");
         btnOrder.setPreferredSize(new java.awt.Dimension(55, 40));
         btnOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,16 +69,16 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
             }
         });
 
-        btnTable.setText("Table");
+        btnTable.setText("Bàn ăn");
 
-        btnUser.setText("  User        ");
+        btnUser.setText("Người dùng");
         btnUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUserActionPerformed(evt);
             }
         });
 
-        btnLogout.setText("Logout");
+        btnLogout.setText("Đăng xuất");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogoutActionPerformed(evt);

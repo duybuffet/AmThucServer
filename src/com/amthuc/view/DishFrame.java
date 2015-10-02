@@ -10,6 +10,7 @@ import com.amthuc.dao.UserDAO;
 import com.amthuc.model.Category;
 import com.amthuc.model.Dish;
 import com.amthuc.model.User;
+import com.amthuc.utils.GLOBAL;
 import com.amthuc.view.CategoryPanel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -71,6 +73,9 @@ public class DishFrame extends javax.swing.JFrame {
         txtId = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setPreferredSize(new java.awt.Dimension(880, 600));
+        setResizable(false);
 
         tblDish.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -86,7 +91,7 @@ public class DishFrame extends javax.swing.JFrame {
         jLabel1.setText("DANH SÁCH MÓN ĂN");
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        btnAdd.setText("Thêm");
+        btnAdd.setText("Thêm mới");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -94,7 +99,7 @@ public class DishFrame extends javax.swing.JFrame {
         });
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        btnUpdate.setText("Sửa");
+        btnUpdate.setText("Cập nhật");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -111,6 +116,8 @@ public class DishFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Mã");
+
+        txtCategory.setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Tên");
@@ -129,6 +136,8 @@ public class DishFrame extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Danh mục");
+
+        txtId.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -209,7 +218,8 @@ public class DishFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        if (txtName.getText().toString().trim() != null && txtPrice.getText().toString().trim() != null && txtCategory.getText().toString().trim() != null) {
+        String err = checkForm();
+        if (err.equals("")) {
             try {
                 DishDAO dao = new DishDAO();
                 Dish dish = new Dish();
@@ -224,12 +234,17 @@ public class DishFrame extends javax.swing.JFrame {
                     txtPrice.setText("");
                     cbbUnit.setSelectedIndex(1);
                     initTable();
+                    showMessage("Thêm mới thành công!");
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             } catch (SQLException ex) {
                 Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             }
+        } else {
+            showMessage(err);
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -238,34 +253,45 @@ public class DishFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cbbUnitActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (txtId.getText().toString().trim() != null && txtName.getText().toString().trim() != null && txtPrice.getText().toString().trim() != null && txtCategory.getText().toString().trim() != null) {
-            try {
-                DishDAO dao = new DishDAO();
-                Dish dish = new Dish();
-                dish.setId(Integer.parseInt(txtId.getText().toString().trim()));
-                dish.setName(txtName.getText().toString().trim());
-                dish.setPrice(Float.parseFloat(txtPrice.getText().toString().trim()));
-                dish.setCategory(new Category(cate_id));
-                dish.setUnit(cbbUnit.getSelectedItem().toString());
-                int update = dao.update(dish);
-                if (update == 1) {
-                    txtId.setText("");
-                    txtName.setText("");
-                    txtPrice.setText("");
-                    cbbUnit.setSelectedIndex(1);
-                    initTable();
-                }
+        if (!txtId.getText().toString().trim().equals("")) {
+            String error = checkForm();
+            if (error.equals("")) {
 
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    DishDAO dao = new DishDAO();
+                    Dish dish = new Dish();
+                    dish.setId(Integer.parseInt(txtId.getText().toString().trim()));
+                    dish.setName(txtName.getText().toString().trim());
+                    dish.setPrice(Float.parseFloat(txtPrice.getText().toString().trim()));
+                    dish.setCategory(new Category(cate_id));
+                    dish.setUnit(cbbUnit.getSelectedItem().toString());
+                    int update = dao.update(dish);
+                    if (update == 1) {
+                        txtId.setText("");
+                        txtName.setText("");
+                        txtPrice.setText("");
+                        cbbUnit.setSelectedIndex(1);
+                        initTable();
+                        showMessage("Cập nhật thành công!");
+                    }
+
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
+                } catch (SQLException ex) {
+                    Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
+                }
+            } else {
+                showMessage(error);
             }
+        } else {
+            showMessage("Chưa chọn món ăn nào");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (txtId.getText().toString().trim() != null) {
+        if (!txtId.getText().toString().trim().equals("")) {
             try {
                 DishDAO dao = new DishDAO();
                 int delete = dao.delete(Integer.parseInt(txtId.getText().toString().trim()));
@@ -275,12 +301,17 @@ public class DishFrame extends javax.swing.JFrame {
                     txtPrice.setText("");
                     cbbUnit.setSelectedIndex(0);
                     initTable();
+                    showMessage("Xóa thành công!");
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             } catch (SQLException ex) {
                 Logger.getLogger(DishFrame.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             }
+        } else {
+            showMessage("Chưa chọn món ăn nào");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -318,7 +349,7 @@ public class DishFrame extends javax.swing.JFrame {
 //                new DishFrame().setVisible(true);
 //            }
 //        });
-//    }
+//    }    
     private void initTable() {
         try {
             DishDAO dao = new DishDAO();
@@ -349,13 +380,14 @@ public class DishFrame extends javax.swing.JFrame {
                     txtCategory.setText(cate_name);
                     txtPrice.setText(tblDish.getValueAt(row, 3).toString());
                     cbbUnit.setSelectedItem(tblDish.getValueAt(row, 2).toString());
-                    
                 }
             });
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
         } catch (SQLException ex) {
             Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -378,8 +410,29 @@ public class DishFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void initCbo() {
-        cbbUnit.addItem("Bát");
-        cbbUnit.addItem("Đĩa");
-        cbbUnit.addItem("Rổ");
+        for (String item : GLOBAL.DISH_UNIT.DISH_UNIT_DISPLAY) {
+            cbbUnit.addItem(item);
+        }
+    }
+
+    private String checkForm() {
+        String error = "";
+        if (txtName.getText().trim().equals("")) {
+            error += "Tên không được để trống";
+        }
+        if (txtPrice.getText().trim().equals("")) {
+            error += "Giá không được để trống";
+        } else {
+            try {
+                Float.parseFloat(txtPrice.getText().trim());
+            } catch (Exception e) {
+                error += "Giá phải là số";
+            }
+        }
+        return error;
+    }
+
+    private void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 }

@@ -50,7 +50,7 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="btnCategory">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Category"/>
+        <Property name="text" type="java.lang.String" value="Danh m&#x1ee5;c"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCategoryActionPerformed"/>
@@ -58,7 +58,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnOrder">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Orders"/>
+        <Property name="text" type="java.lang.String" value="&#x110;&#x1a1;n h&#xe0;ng"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[55, 40]"/>
         </Property>
@@ -69,12 +69,12 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnTable">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Table"/>
+        <Property name="text" type="java.lang.String" value="B&#xe0;n &#x103;n"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnUser">
       <Properties>
-        <Property name="text" type="java.lang.String" value="  User        "/>
+        <Property name="text" type="java.lang.String" value="Ng&#x1b0;&#x1edd;i d&#xf9;ng"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUserActionPerformed"/>
@@ -82,7 +82,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnLogout">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Logout"/>
+        <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogoutActionPerformed"/>
