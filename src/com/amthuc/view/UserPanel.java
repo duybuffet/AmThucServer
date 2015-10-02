@@ -267,7 +267,7 @@ public class UserPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (!txtId.getText().toString().trim().equals("")) {
+        if (!txtId.getText().trim().equals("")) {
             String error = checkForm();
             if (error.equals("")) {
                 try {
@@ -307,7 +307,7 @@ public class UserPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (!txtId.getText().toString().trim().equals("")) {
+        if (!txtId.getText().trim().equals("")) {
             try {
 
                 int delete = dao.delete(Integer.parseInt(txtId.getText().toString().trim()));
@@ -379,10 +379,12 @@ public class UserPanel extends javax.swing.JPanel {
         this.txtUsername = txtPhone;
     }
 
-    private void initTable() {
+    public void initTable() {
         try {
             ArrayList<User> listUser = new ArrayList<>();
-            listUser = (ArrayList<User>) dao.getAll(LoginPanel.userLogin.getId());
+            if (LoginPanel.userLogin != null) {
+                listUser = (ArrayList<User>) dao.getAll(LoginPanel.userLogin.getId());
+            }            
             Vector tblRecords = new Vector();
             Vector tblTitle = new Vector();
             tblTitle.add("Mã");

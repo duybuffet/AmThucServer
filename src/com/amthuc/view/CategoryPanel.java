@@ -236,7 +236,7 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         String err = checkForm();
-        if (!txtId.getText().toString().trim().equals("")) {
+        if (!txtId.getText().trim().equals("")) {
             if (err.equals("")) {
                 try {
                     CategoryDAO categoryDAO = new CategoryDAO();

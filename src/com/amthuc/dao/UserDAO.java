@@ -7,6 +7,7 @@ package com.amthuc.dao;
 
 import com.amthuc.model.*;
 import com.amthuc.utils.DBConnect;
+import com.amthuc.utils.GLOBAL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -107,6 +108,25 @@ public class UserDAO {
         return ps.executeUpdate();
     }
 
+    public User login_admin(User user) throws SQLException, ClassNotFoundException {
+        User u = null;
+        System.out.println("name " + user.getUsername());
+        System.out.println("pass " + user.getPassword());
+        
+        String query = "SELECT * FROM tbl_user WHERE username = ? AND password = ? AND user_level = ?";
+        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setString(1, user.getUsername());
+        ps.setString(2, user.getPassword());
+        ps.setInt(3, GLOBAL.USER_LEVEL.ADMIN);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            u = new User(rs.getInt("id"),
+                    rs.getString("username"), rs.getString("password"),
+                    rs.getInt("user_level"));
+        }
+        return u;
+    }
+    
     public User login(User user) throws SQLException, ClassNotFoundException {
         User u = null;
         String query = "SELECT * FROM tbl_user WHERE username = ? AND password = ?";

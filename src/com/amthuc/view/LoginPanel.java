@@ -21,7 +21,9 @@ import javax.swing.JTextField;
  * @author ASUS_PC
  */
 public class LoginPanel extends javax.swing.JPanel {
-    public static User userLogin = new User(1, "", "", 2);
+
+    public static User userLogin;
+
     /**
      * Creates new form LoginPanel
      */
@@ -87,25 +89,7 @@ public class LoginPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        User user = new User();
-        if (this.getTxtUName().toString().trim() != null && this.getTxtPass().toString().trim() != null) {
-            try {
-                user.setUsername(this.getTxtUName().toString().trim());
-                user.setPassword(this.getTxtPass().toString().trim());
-                
-                UserDAO uDao = new UserDAO();
-                User uLogin = uDao.login(user);
-                if (uLogin != null) {
-                    
-                }else{
-                    
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+
     }//GEN-LAST:event_btnLoginActionPerformed
 
     public JPasswordField getTxtPass() {

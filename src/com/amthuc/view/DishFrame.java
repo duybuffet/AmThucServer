@@ -261,7 +261,7 @@ public class DishFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cbbUnitActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (!txtId.getText().toString().trim().equals("")) {
+        if (!txtId.getText().trim().equals("")) {
             String error = checkForm();
             if (error.equals("")) {
 
@@ -299,7 +299,7 @@ public class DishFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (!txtId.getText().toString().trim().equals("")) {
+        if (!txtId.getText().trim().equals("")) {
             try {
                 DishDAO dao = new DishDAO();
                 int delete = dao.delete(Integer.parseInt(txtId.getText().toString().trim()));
