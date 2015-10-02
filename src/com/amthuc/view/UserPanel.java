@@ -9,6 +9,7 @@ import com.amthuc.dao.CategoryDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.Category;
 import com.amthuc.model.User;
+import com.amthuc.utils.GLOBAL;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,8 +32,11 @@ public class UserPanel extends javax.swing.JPanel {
      * Creates new form UserPanel
      */
     public UserPanel() {
+        dao = new UserDAO();
         initComponents();
         initTable();
+        initCbb();
+
     }
 
     /**
@@ -52,26 +57,36 @@ public class UserPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtFullname = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtPhone = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        txtUsername = new javax.swing.JTextField();
         cbbLevel = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        txtPhone1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtPass = new javax.swing.JPasswordField();
 
         tblUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã", "Tên truy cập", "Họ tên", "Số điện thoại"
+                "Mã", "Tên truy cập", "Họ tên", "Số điện thoại", "Loại nhân viên"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblUser);
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        btnAdd.setText("Thêm");
+        btnAdd.setText("Thêm mới");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -87,7 +102,7 @@ public class UserPanel extends javax.swing.JPanel {
         });
 
         btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        btnUpdate.setText("Sửa");
+        btnUpdate.setText("Cập nhật");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -100,6 +115,7 @@ public class UserPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Mã");
 
+        txtId.setEditable(false);
         txtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdActionPerformed(evt);
@@ -107,7 +123,7 @@ public class UserPanel extends javax.swing.JPanel {
         });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Tài khoản");
+        jLabel3.setText("Loại nhân viên");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Họ tên");
@@ -115,29 +131,18 @@ public class UserPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("SĐT");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Level");
-
         cbbLevel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        cbbLevel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Admin", "Bếp", "Nhân viên" }));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Tên tài khoản");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Mật khẩu");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(354, 354, 354)
-                        .addComponent(jLabel1)))
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
@@ -145,139 +150,184 @@ public class UserPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel2))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                    .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                    .addComponent(cbbLevel, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(198, 198, 198)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(50, 50, 50)
-                        .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGap(193, 193, 193)
+                                .addComponent(jLabel1)))
+                        .addGap(109, 109, 109)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 185, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                                .addGap(198, 198, 198)
+                                .addComponent(jLabel4)
+                                .addGap(50, 50, 50)
+                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(cbbLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(198, 198, 198))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7))
+                                .addGap(35, 35, 35)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtPhone1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                                    .addComponent(txtPass))))
+                        .addContainerGap(20, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(42, 42, 42)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtFullname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(cbbLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel3)
+                    .addComponent(cbbLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPhone1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-       if (txtName.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null) {
+        String error = checkForm();
+        if (error.equals("")) {
             try {
-                UserDAO dao = new UserDAO();
                 User user = new User();
-                user.setUsername(txtName.getText().toString().trim());
-                user.setFullName(txtFullname.getText().toString().trim());
-                user.setPhone(txtPhone.getText().toString().trim());
+                user.setUsername(txtUsername.getText().toString().trim());
+                user.setFullName(txtName.getText().toString().trim());
+                user.setPhone(txtPhone1.getText().toString().trim());
                 user.setUserLevel(cbbLevel.getSelectedIndex());
+                user.setPassword(txtPass.getText());
                 boolean insert = dao.insert(user);
                 if (insert) {
                     txtName.setText("");
                     txtId.setText("");
-                    txtFullname.setText("");
-                    txtPhone.setText("");
-                    cbbLevel.setSelectedIndex(0);
+                    txtName.setText("");
+                    txtUsername.setText("");
+                    cbbLevel.setSelectedIndex(GLOBAL.USER_LEVEL.WAITER);
                     initTable();
+                    showMessage("Thêm mới thành công!");
+                } else {
+                    showMessage("Tên tài khoản đã tồn tại! Vui lòng thử lại");
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             } catch (SQLException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             }
+        } else {
+            showMessage(error);
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
-        
+
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (txtId.getText().toString().trim() != null && txtName.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null && txtFullname.getText().toString().trim() != null) {
-            try {
-                UserDAO dao = new UserDAO();
-                User user = new User();
-                user.setId(Integer.parseInt(txtId.getText().toString().trim()));
-                user.setUsername(txtName.getText().toString().trim());
-                user.setFullName(txtFullname.getText().toString().trim());
-                user.setPhone(txtPhone.getText().toString().trim());
-                user.setUserLevel(cbbLevel.getSelectedIndex());
-                int insert = dao.update(user);
-                if (insert == 1) {
-                    txtName.setText("");
-                    txtId.setText("");
-                    txtFullname.setText("");
-                    txtPhone.setText("");
-                    cbbLevel.setSelectedIndex(0);
-                    initTable();
+        if (!txtId.getText().toString().trim().equals("")) {
+            String error = checkForm();
+            if (error.equals("")) {
+                try {
+                    User user = new User();
+                    user.setId(Integer.parseInt(txtId.getText().toString().trim()));
+                    user.setUsername(txtUsername.getText().toString().trim());
+                    user.setFullName(txtName.getText().toString().trim());
+                    user.setPhone(txtPhone1.getText().toString().trim());
+                    user.setUserLevel(cbbLevel.getSelectedIndex());
+                    user.setPassword(txtPass.getText());
+                    int insert = dao.update(user);
+                    if (insert == 1) {
+                        txtName.setText("");
+                        txtId.setText("");
+                        txtName.setText("");
+                        txtUsername.setText("");
+                        txtPass.setText("");
+                        cbbLevel.setSelectedIndex(0);
+                        initTable();
+                        showMessage("Cập nhật thành công!");
+                    } else {
+                        showMessage("Tên tài khoản trùng với tên tài khoản đã tồn tài! Vui lòng thử lại");
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
+                } catch (SQLException ex) {
+                    Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
                 }
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                showMessage(error);
             }
+        } else {
+            showMessage("Chưa chọn người dùng nào.");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if (txtId.getText().toString().trim() != null) {
+        if (!txtId.getText().toString().trim().equals("")) {
             try {
-                UserDAO dao = new UserDAO();
+
                 int delete = dao.delete(Integer.parseInt(txtId.getText().toString().trim()));
-                if(delete == 1){
+                if (delete == 1) {
                     txtName.setText("");
                     txtId.setText("");
-                    txtFullname.setText("");
-                    txtPhone.setText("");
+                    txtName.setText("");
+                    txtUsername.setText("");
                     initTable();
+                    showMessage("Xóa thành công!");
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             } catch (SQLException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
+                showMessage("Có lỗi xảy ra ! Vui lòng thử lại sau.");
             }
+        } else {
+            showMessage("Chưa chọn người dùng nào");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -306,11 +356,11 @@ public class UserPanel extends javax.swing.JPanel {
     }
 
     public JTextField getTxtFullname() {
-        return txtFullname;
+        return txtName;
     }
 
     public void setTxtFullname(JTextField txtFullname) {
-        this.txtFullname = txtFullname;
+        this.txtName = txtFullname;
     }
 
     public JTextField getTxtId() {
@@ -321,54 +371,56 @@ public class UserPanel extends javax.swing.JPanel {
         this.txtId = txtId;
     }
 
-    public JTextField getTxtName() {
-        return txtName;
-    }
-
-    public void setTxtName(JTextField txtName) {
-        this.txtName = txtName;
-    }
-
     public JTextField getTxtPhone() {
-        return txtPhone;
+        return txtUsername;
     }
 
     public void setTxtPhone(JTextField txtPhone) {
-        this.txtPhone = txtPhone;
+        this.txtUsername = txtPhone;
     }
+
     private void initTable() {
         try {
-            
-            UserDAO dao = new UserDAO();
             ArrayList<User> listUser = new ArrayList<>();
-            listUser = (ArrayList<User>) dao.getAll();
+            listUser = (ArrayList<User>) dao.getAll(LoginPanel.userLogin.getId());
             Vector tblRecords = new Vector();
             Vector tblTitle = new Vector();
             tblTitle.add("Mã");
             tblTitle.add("Tên truy cập");
             tblTitle.add("Họ và tên");
-            tblTitle.add("Số điệnt thoại");
-            tblTitle.add("Level");
+            tblTitle.add("Số điện thoại");
+            tblTitle.add("Loại tài khoản");
             for (User lc : listUser) {
                 Vector record = new Vector();
                 record.add(lc.getId());
                 record.add(lc.getUsername());
                 record.add(lc.getFullName());
                 record.add(lc.getPhone());
-                record.add(lc.getUserLevel());
+                record.add(GLOBAL.USER_LEVEL.USER_LEVEL_DISPLAY[lc.getUserLevel()]);
+                System.out.println("display : " + GLOBAL.USER_LEVEL.USER_LEVEL_DISPLAY[lc.getUserLevel()]);
                 tblRecords.add(record);
             }
-            
+
             tblUser.setModel(new DefaultTableModel(tblRecords, tblTitle));
             tblUser.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    int row = tblUser.getSelectedRow();
-                    txtId.setText(tblUser.getValueAt(row, 0).toString());
-                    txtName.setText(tblUser.getValueAt(row, 1).toString());
-                    txtFullname.setText(tblUser.getValueAt(row, 2).toString());
-                    txtPhone.setText(tblUser.getValueAt(row, 3).toString());
-                    cbbLevel.setSelectedIndex(Integer.parseInt(tblUser.getValueAt(row, 4).toString()));
+                    try {
+                        int row = tblUser.getSelectedRow();
+                        txtId.setText(tblUser.getValueAt(row, 0).toString());
+                        User userClick = dao.get(Integer.parseInt(txtId.getText()));
+                        txtName.setText(userClick.getFullName());
+                        txtUsername.setText(userClick.getUsername());
+                        txtPhone1.setText(userClick.getPhone());
+                        txtPass.setText(userClick.getPassword());
+                        cbbLevel.setSelectedIndex(userClick.getUserLevel());
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        showMessage("Có lỗi xảy ra!");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
+                        showMessage("Có lỗi xảy ra!");
+                    }
                 }
             });
         } catch (ClassNotFoundException ex) {
@@ -376,6 +428,30 @@ public class UserPanel extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private String checkForm() {
+        String error = "";
+        if (txtName.getText().toString().trim().equals("")) {
+            error += "Họ tên không được để trống\n";
+        }
+
+        if (txtUsername.getText().toString().trim().equals("")) {
+            error += "Tên tài khoản không được để trống\n";
+        }
+
+        if (txtPass.getText().equals("")) {
+            error += "Mật khẩu không được để trống\n";
+        } else {
+            if (txtPass.getText().length() < 6) {
+                error += "Mật khẩu phải nhiều hơn hoặc bằng 6 kí tự\n";
+            }
+        }
+        return error;
+    }
+
+    private void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -388,11 +464,21 @@ public class UserPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUser;
-    private javax.swing.JTextField txtFullname;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPhone;
+    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtPhone1;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+
+    private UserDAO dao;
+
+    private void initCbb() {
+        for (String item : GLOBAL.USER_LEVEL.USER_LEVEL_DISPLAY) {
+            cbbLevel.addItem(item);
+        }
+    }
 }

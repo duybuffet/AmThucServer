@@ -36,6 +36,7 @@ public class UserDAO {
             user.setFullName(rs.getString("fullname"));
             user.setPhone(rs.getString("phone"));
             user.setUserLevel(rs.getInt("user_level"));
+            user.setPassword(rs.getString("password"));
             result.add(user);
         }
         return result;
@@ -43,7 +44,7 @@ public class UserDAO {
 
     public User get(int id) throws ClassNotFoundException, SQLException {
         User user = null;
-        String query = "SELECT username, user_level FROM tbl_user WHERE id = ?";
+        String query = "SELECT * FROM tbl_user WHERE id = ?";
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, id);
@@ -54,6 +55,9 @@ public class UserDAO {
             user.setId(id);
             user.setUsername(rs.getString("username"));
             user.setUserLevel(rs.getInt("user_level"));
+            user.setFullName(rs.getString("fullname"));
+            user.setPhone(rs.getString("phone"));
+            user.setPassword(rs.getString("password"));
             return user;
         }
 
@@ -61,13 +65,11 @@ public class UserDAO {
     }
 
     public boolean insert(User user) throws ClassNotFoundException, SQLException {
-        User u = login(user);
-        if (u == null) {
-            System.out.println("User level in dao : " + user.getUserLevel());
+        if (!checkExist(user)) {
             String query = "INSERT INTO tbl_user (username,password,user_level,fullname,phone) VALUES(?,?,?,?,?)";
             PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
             ps.setString(1, user.getUsername());
-            ps.setString(2, "123456");
+            ps.setString(2, user.getPassword());
             ps.setInt(3, user.getUserLevel());
             ps.setString(4, user.getFullName());
             ps.setString(5, user.getPhone());
@@ -78,13 +80,24 @@ public class UserDAO {
     }
 
     public int update(User user) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE tbl_user SET username = ?,fullname = ?,phone = ? WHERE id = ?";
-        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
-        ps.setString(1, user.getUsername());
-        ps.setString(2, user.getFullName());
-        ps.setString(3, user.getPhone());
-        ps.setInt(4, user.getId());
-        return ps.executeUpdate();
+        User oldProfile = get(user.getId());
+        System.out.println("Found user old : " + oldProfile.getUsername());
+        System.out.println("User update : " + user.getUsername());
+        if (oldProfile != null) {
+            if (!oldProfile.getUsername().equals(user.getUsername()) && checkExist(user)) {
+                return 0;
+            }
+            String query = "UPDATE tbl_user SET username = ?,fullname = ?,phone = ?, password = ? WHERE id = ?";
+            PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getFullName());
+            ps.setString(3, user.getPhone());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getId());
+            return ps.executeUpdate();
+        }
+        return 0;
+
     }
 
     public int delete(int id) throws ClassNotFoundException, SQLException {
@@ -109,21 +122,14 @@ public class UserDAO {
         return u;
     }
     
-    public static void main(String[] args) {
-        try {
-            User user = new User();
-            user.setPassword("123456");
-            user.setUsername("duy");
-            UserDAO dao = new UserDAO();
-//            User res = dao.login(user);
-            dao.insert(user);
-//            System.out.println(res.getUsername());
-        } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+    public boolean checkExist(User user) throws ClassNotFoundException, SQLException {
+        String query = "SELECT id FROM tbl_user WHERE username = ?";
+        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setString(1, user.getUsername());
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return true;
         }
+        return false;
     }
-    
-    
 }

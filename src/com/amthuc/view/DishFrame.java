@@ -84,7 +84,15 @@ public class DishFrame extends javax.swing.JFrame {
             new String [] {
                 "Mã", "Tên", "Đơn vị tính", "Giá"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblDish);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -418,15 +426,15 @@ public class DishFrame extends javax.swing.JFrame {
     private String checkForm() {
         String error = "";
         if (txtName.getText().trim().equals("")) {
-            error += "Tên không được để trống";
+            error += "Tên không được để trống\n";
         }
         if (txtPrice.getText().trim().equals("")) {
-            error += "Giá không được để trống";
+            error += "Giá không được để trống\n";
         } else {
             try {
                 Float.parseFloat(txtPrice.getText().trim());
             } catch (Exception e) {
-                error += "Giá phải là số";
+                error += "Giá phải là số\n";
             }
         }
         return error;

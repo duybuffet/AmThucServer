@@ -72,7 +72,7 @@ public class LoginPanel extends javax.swing.JPanel {
         txtPass.setBounds(450, 290, 210, 30);
 
         btnLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        btnLogin.setText("Đăng nhật");
+        btnLogin.setText("Đăng nhập");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);

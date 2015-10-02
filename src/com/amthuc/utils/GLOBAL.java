@@ -1,5 +1,6 @@
 package com.amthuc.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GLOBAL {
@@ -47,8 +48,7 @@ public class GLOBAL {
         public static final int ADMIN = 2;
         public static final int CHEF = 1;
         public static final int WAITER = 0;
-        public static final String[] USER_LEVEL_DISPLAY = {"Bồi bàn", "Bếp", "Quản trị"};
-        
+        public static final String[] USER_LEVEL_DISPLAY = {"Bồi bàn", "Bếp", "Quản trị"};        
     }
         
 }
