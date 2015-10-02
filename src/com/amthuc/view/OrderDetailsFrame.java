@@ -25,7 +25,7 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
     private int o_id;
     private ArrayList<OrderDetails> listOrder;
     /**
-     * Creates new form OrderDetailsForm
+     *  Creates new form OrderDetailsForm
      */
     public OrderDetailsFrame() {
         initComponents();
