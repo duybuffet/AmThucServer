@@ -286,6 +286,7 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                     txtPatryCompleteTime.setText(details.getOrder().getPantryCompleteTime());
                     txtPaytime.setText(details.getOrder().getPayTime());
                     txaDesc.setText(details.getDish().getDescription());
+                    
                 }
             });
         } catch (ClassNotFoundException ex) {

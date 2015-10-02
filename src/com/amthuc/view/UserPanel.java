@@ -272,7 +272,6 @@ public class UserPanel extends javax.swing.JPanel {
                     txtFullname.setText("");
                     txtPhone.setText("");
                     initTable();
-                    
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);

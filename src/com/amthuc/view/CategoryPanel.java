@@ -276,8 +276,7 @@ public class CategoryPanel extends javax.swing.JPanel {
                     txtName.setText("");
                     txtId.setText("");
                     txtDesc.setText("");
-                    initTable();
-                    
+                    initTable();  
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CategoryPanel.class.getName()).log(Level.SEVERE, null, ex);

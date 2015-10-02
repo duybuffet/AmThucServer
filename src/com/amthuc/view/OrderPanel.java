@@ -115,8 +115,7 @@ public class OrderPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOrderDetailsActionPerformed
 
     private void initTable() {
-        try {
-            
+        try {   
             OrderDAO dao = new OrderDAO();
             ArrayList<Order> listOrder = new ArrayList<>();
             listOrder = (ArrayList<Order>) dao.getAll();

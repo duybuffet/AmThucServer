@@ -96,7 +96,6 @@ public class LoginPanel extends javax.swing.JPanel {
                 }else{
                     
                 }
-                
             } catch (SQLException ex) {
                 Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {

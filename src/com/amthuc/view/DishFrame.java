@@ -349,6 +349,7 @@ public class DishFrame extends javax.swing.JFrame {
                     txtCategory.setText(cate_name);
                     txtPrice.setText(tblDish.getValueAt(row, 3).toString());
                     cbbUnit.setSelectedItem(tblDish.getValueAt(row, 2).toString());
+                    
                 }
             });
         } catch (ClassNotFoundException ex) {
