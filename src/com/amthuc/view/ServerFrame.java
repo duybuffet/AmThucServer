@@ -5,6 +5,8 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.CategoryDAO;
+import com.amthuc.dao.DishDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.User;
 import com.amthuc.server.Client;
@@ -56,6 +58,8 @@ public class ServerFrame extends javax.swing.JFrame {
     private ArrayList<Client> arrClients = new ArrayList<Client>();
     private ArrayList<User> arrUsers = new ArrayList<User>();
     private UserDAO userDao = new UserDAO();
+    private CategoryDAO categoryDAO = new CategoryDAO();
+    private DishDAO dishDAO = new DishDAO();
     
 
     public void listening() throws NullPointerException, IOException {
@@ -91,7 +95,14 @@ public class ServerFrame extends javax.swing.JFrame {
             case GLOBAL.FROM_CLIENT.CHAT:
                 sendChatMessage(message, client);
                 break;
-
+            
+            case GLOBAL.FROM_CLIENT.LIST_CATEGORY:
+                sendListCategory(message, client);
+                break;
+                
+            case GLOBAL.FROM_CLIENT.LIST_DISH_BY_CATEGORY:
+                sendListDishByCategory(message, client);
+                break;
         }
     }
 
@@ -180,6 +191,21 @@ public class ServerFrame extends javax.swing.JFrame {
 
     public void sendMessageToClient(Message msg, Client client) {
         client.sendMessage(msg);
+    }
+
+    private void sendListCategory(Message message, Client client) throws ClassNotFoundException, SQLException {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.LIST_CATEGORY);
+        mes.setArrCategories(categoryDAO.getAll());
+        sendMessageToClient(mes, client);
+    }
+
+    private void sendListDishByCategory(Message message, Client client) throws ClassNotFoundException, SQLException {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.LIST_DISH_BY_CATEGORY);
+        int catId = Integer.parseInt(message.getMsg());
+        mes.setArrDishes(dishDAO.getByCategory(catId));
+        sendMessageToClient(mes, client);
     }
 
     public class ProcessMessage implements Client.onMessageReceived {
