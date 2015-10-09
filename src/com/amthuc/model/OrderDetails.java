@@ -7,7 +7,7 @@ package com.amthuc.model;
 
 /**
  *
- * @author Duy
+ * @author Pia
  */
 public class OrderDetails {
 

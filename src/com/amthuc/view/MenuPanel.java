@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
  */
 /**
  *
- * @author ASUS_PC
+ * @author Pia
  */
 public class MenuPanel extends javax.swing.JPanel implements ActionListener, MouseListener {
 

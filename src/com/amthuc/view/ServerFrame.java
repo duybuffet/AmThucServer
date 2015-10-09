@@ -15,6 +15,7 @@ import com.amthuc.server.Server;
 import com.amthuc.utils.GLOBAL;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jtattoo.plaf.bernstein.BernsteinLookAndFeel;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -25,10 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JSplitPane;
+import javax.swing.UIManager;
 
 /**
  *
- * @author Duy
+ * @author Pia
  */
 public class ServerFrame extends javax.swing.JFrame {
 
@@ -254,6 +256,11 @@ public class ServerFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        try {
+            UIManager.setLookAndFeel(new BernsteinLookAndFeel());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             ServerFrame server = null;
             server = new ServerFrame();

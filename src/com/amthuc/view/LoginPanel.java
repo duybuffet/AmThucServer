@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author ASUS_PC
+ * @author Pia
  */
 public class LoginPanel extends javax.swing.JPanel {
 

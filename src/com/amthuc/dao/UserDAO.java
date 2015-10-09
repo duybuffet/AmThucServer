@@ -120,6 +120,7 @@ public class UserDAO {
         ps.setInt(3, GLOBAL.USER_LEVEL.ADMIN);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
+            System.out.println("Success");
             u = new User(rs.getInt("id"),
                     rs.getString("username"), rs.getString("password"),
                     rs.getInt("user_level"));

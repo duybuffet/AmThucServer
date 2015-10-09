@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author Duy
+ * @author Pia
  */
 public class OrderDetailsDAO {
     public List<OrderDetails> getByOrder(int orderId) throws ClassNotFoundException, SQLException {
