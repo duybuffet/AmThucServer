@@ -33,6 +33,7 @@ public class CategoryDAO {
             category.setName(rs.getString("name"));
             category.setDescription(rs.getString("description"));
             category.setImage(rs.getString("image"));
+            category.setListDishes(new DishDAO().getByCategory(category.getId()));
             result.add(category);
         }
         return result;

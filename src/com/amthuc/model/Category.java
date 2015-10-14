@@ -16,7 +16,6 @@ public class Category {
     private int id;
     private String name;
     private String description;
-    private boolean isEnable;
     private String image;
     private List<Dish> listDishes;
 
@@ -31,7 +30,6 @@ public class Category {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.isEnable = isEnable;
         this.image = image;
     }
 
@@ -65,14 +63,6 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isIsEnable() {
-        return isEnable;
-    }
-
-    public void setIsEnable(boolean isEnable) {
-        this.isEnable = isEnable;
     }
 
     public String getImage() {
