@@ -65,6 +65,11 @@ public class GLOBAL {
         public static final int ORDER_READY_TO_SERVED = 3;
         public static final int ORDER_SERVED = 4;
         public static final int ORDER_BILLED = 5;
+        public static final int ORDER_CANCEL = 6;
+        
+        public static final String[] ORDER_DISPLAY = {"Bàn trống", "Chưa gọi món", 
+                                "Đã gọi món", "Món sẵn sàng phục vụ", "Đã phục vụ", 
+                                "Đã thanh toán", "Hủy"};
     }
 
     public static class DISH_UNIT {
@@ -82,5 +87,4 @@ public class GLOBAL {
         public static final int WAITER = 0;
         public static final String[] USER_LEVEL_DISPLAY = {"Bồi bàn", "Bếp", "Quản trị"};
     }
-
 }

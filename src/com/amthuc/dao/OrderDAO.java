@@ -26,6 +26,7 @@ public class OrderDAO {
         Order order = null;
         String query = "SELECT * FROM tbl_order";
         TableDAO tblDao = new TableDAO();
+        OrderDetailsDAO detailsDao = new OrderDetailsDAO();
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
@@ -37,6 +38,7 @@ public class OrderDAO {
             order.setTotalCost(rs.getDouble("total_cost"));
             order.setOrderTime(rs.getString("order_time"));
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
+            order.setItems(detailsDao.getByOrder(order.getId()));
             result.add(order);
         }
         return result;
@@ -46,6 +48,7 @@ public class OrderDAO {
         Order order = null;
         String query = "SELECT * FROM tbl_order WHERE id = ?";
         TableDAO tblDao = new TableDAO();
+        OrderDetailsDAO detailsDao = new OrderDetailsDAO();
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, id);
@@ -59,6 +62,7 @@ public class OrderDAO {
             order.setTotalCost(rs.getDouble("total_cost"));
             order.setOrderTime(rs.getString("order_time"));
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
+            order.setItems(detailsDao.getByOrder(id));
             return order;
         }
         return order;

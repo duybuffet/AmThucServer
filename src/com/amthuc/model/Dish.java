@@ -120,7 +120,5 @@ public class Dish {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-    
-    
+    }   
 }

@@ -9,6 +9,7 @@ import com.amthuc.dao.OrderDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.Order;
 import com.amthuc.model.User;
+import com.amthuc.utils.GLOBAL;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -58,7 +59,7 @@ public class OrderPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, true, false, false, true, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -129,10 +130,10 @@ public class OrderPanel extends javax.swing.JPanel {
             for (Order lc : listOrder) {
                 Vector record = new Vector();
                 record.add(lc.getId());
-                record.add(lc.getItems());
-                record.add(lc.getOrderTable());
+                record.add(lc.getOrderTime());
+                record.add(lc.getOrderTable().getName());
                 record.add(lc.getTotalCost());
-                record.add(lc.getStatus());                
+                record.add(GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_DISPLAY[lc.getStatus()]);                
                 tblRecords.add(record);
             }
             

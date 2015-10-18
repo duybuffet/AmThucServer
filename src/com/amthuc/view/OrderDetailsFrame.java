@@ -22,10 +22,12 @@ import javax.swing.table.DefaultTableModel;
  * @author Pia
  */
 public class OrderDetailsFrame extends javax.swing.JFrame {
+
     private int o_id;
     private ArrayList<OrderDetails> listOrder;
+
     /**
-     *  Creates new form OrderDetailsForm
+     * Creates new form OrderDetailsForm
      */
     public OrderDetailsFrame() {
         initComponents();
@@ -231,31 +233,21 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
             }
         });
     }
+
     private void initTable() {
         try {
-            
+
             OrderDetailsDAO dao = new OrderDetailsDAO();
             listOrder = new ArrayList<>();
             listOrder = (ArrayList<OrderDetails>) dao.getByOrder(o_id);
-            Vector tblRecords = new Vector();
-            Vector tblTitle = new Vector();
-            tblTitle.add("Món");
-            tblTitle.add("Giá");
-            tblTitle.add("Số lượng");
+            
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Món", "Giá", "Số lượng"}, 0);
+            
             for (OrderDetails lc : listOrder) {
-                Vector record = new Vector();
-                record.add(lc.getId());
-                
-                DishDAO dDao = new DishDAO();
-                String name = dDao.get(lc.getDish().getId()).getName();
-                
-                record.add(name);
-                record.add(lc.getDisplayPrice());
-                record.add(lc.getQuantity());
-                tblRecords.add(record);
+                model.addRow(new Object[]{lc.getDish().getName(), lc.getDisplayPrice(), lc.getQuantity()});
             }
             
-            tblOrder.setModel(new DefaultTableModel(tblRecords, tblTitle));
+            tblOrder.setModel(model);
             tblOrder.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -265,7 +257,7 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                     txtOrderTime.setText(details.getOrder().getOrderTime());
                     txtPatryCompleteTime.setText(details.getOrder().getPantryCompleteTime());
                     txaDesc.setText(details.getDish().getDescription());
-                    
+
                 }
             });
         } catch (ClassNotFoundException ex) {
