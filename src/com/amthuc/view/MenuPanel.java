@@ -206,7 +206,13 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
             for (Table tbl : all) {
                 switch (tbl.getArea()) {
                     case GLOBAL.AREA.FLOOR_1:
-                        
+                        lstTableFloor1.add(new TableLabel(tbl));
+                        break;                    
+                    case GLOBAL.AREA.FLOOR_2:
+                        lstTableFloor2.add(new TableLabel(tbl));
+                        break;                    
+                    case GLOBAL.AREA.FLOOR_3:
+                        lstTableFloor3.add(new TableLabel(tbl));
                         break;                    
                 }
             }

@@ -19,7 +19,7 @@ public class TableLabel extends JLabel {
     private int type;
     private int status;
 
-    private TableLabel(Table table) {
+    public TableLabel(Table table) {
         this.id = table.getId();
         this.name = table.getName();
         this.area = table.getArea();
