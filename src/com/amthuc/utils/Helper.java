@@ -6,12 +6,11 @@
 package com.amthuc.utils;
 
 import com.amthuc.model.Table;
+import com.amthuc.model.TableLabel;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,9 +28,9 @@ import org.xml.sax.SAXException;
  */
 public class Helper {
 
-    public static List<Table> loadTables(String fileName, int _floor) throws ParserConfigurationException,
+    public static List<TableLabel> loadTables(String fileName, int _floor) throws ParserConfigurationException,
             SAXException, IOException {
-        List<Table> lst = new ArrayList<>();
+        List<TableLabel> lst = new ArrayList<>();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -62,7 +61,7 @@ public class Helper {
 
                 
                 if (_floor == floor) {
-                    lst.add(new Table(ID, name, floor, type));  
+                    lst.add(new TableLabel(ID, name, floor, type));  
                 }
                 
             }

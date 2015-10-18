@@ -5,7 +5,7 @@
  */
 package com.amthuc.view;
 
-import com.amthuc.model.Table;
+import com.amthuc.model.TableLabel;
 import com.amthuc.utils.GLOBAL;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,14 +24,14 @@ import javax.swing.JPanel;
  */
 public class TableFloor2Panel extends JPanel{
 
-    private List<Table> lstTable;    
+    private List<TableLabel> lstTable;    
     private JLabel lblNext;
     private JLabel lblPre;
     private JLabel lblFloor;
     private JPanel content;
     
 
-    public TableFloor2Panel(List<Table> lstTable) {
+    public TableFloor2Panel(List<TableLabel> lstTable) {
         this.lstTable = lstTable;
         this.setPreferredSize(new Dimension(799, 600));
         this.setLayout(null);
@@ -55,7 +55,7 @@ public class TableFloor2Panel extends JPanel{
         content.setOpaque(false);
         
         int count = 0;
-        for (Table t : lstTable) {
+        for (TableLabel t : lstTable) {
             if (count < 8) {
                 count++;      
                 JPanel pnTable = new JPanel(null);                

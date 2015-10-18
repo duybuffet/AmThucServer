@@ -1,17 +1,19 @@
 package com.amthuc.view;
 
+import com.amthuc.dao.TableDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.Table;
+import com.amthuc.model.TableLabel;
 import com.amthuc.model.User;
 import com.amthuc.utils.GLOBAL;
 import com.amthuc.utils.Helper;
-import static com.amthuc.view.LoginPanel.userLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -194,14 +196,23 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
 
     private void init() {
         try {
-            lstTableFloor1 = Helper.loadTables("config_table.xml", GLOBAL.AREA.FLOOR_1);
-            lstTableFloor2 = Helper.loadTables("config_table.xml", GLOBAL.AREA.FLOOR_2);
-            lstTableFloor3 = Helper.loadTables("config_table.xml", GLOBAL.AREA.FLOOR_3);
-        } catch (ParserConfigurationException ex) {
+            TableDAO tblDao = new TableDAO();
+            List<Table> all = tblDao.getAll();
+            
+            lstTableFloor1 = new ArrayList<>();
+            lstTableFloor2 = new ArrayList<>();
+            lstTableFloor3 = new ArrayList<>();
+            
+            for (Table tbl : all) {
+                switch (tbl.getArea()) {
+                    case GLOBAL.AREA.FLOOR_1:
+                        
+                        break;                    
+                }
+            }
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         loginPanel = new LoginPanel();
@@ -230,9 +241,9 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
         this.tableFloor3Panel.getLblPre().addMouseListener(this);
     }
 
-    private List<Table> lstTableFloor1;
-    private List<Table> lstTableFloor2;
-    private List<Table> lstTableFloor3;
+    private List<TableLabel> lstTableFloor1;
+    private List<TableLabel> lstTableFloor2;
+    private List<TableLabel> lstTableFloor3;
     private ServerFrame serverFrame;
     private LoginPanel loginPanel;
     private UserPanel userPanel;

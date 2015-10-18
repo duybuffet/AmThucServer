@@ -6,6 +6,7 @@
 package com.amthuc.view;
 
 import com.amthuc.model.Table;
+import com.amthuc.model.TableLabel;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -23,14 +24,14 @@ import javax.swing.JPanel;
  * @author Pia
  */
 public class TableFloor1Panel extends JPanel implements MouseListener {
-    private List<Table> lstTable;    
+    private List<TableLabel> lstTable;    
     private JLabel lblNext;
     private JLabel lblPre;
     private JLabel lblFloor;
     private JPanel content;
     
 
-    public TableFloor1Panel(List<Table> lstTable) {
+    public TableFloor1Panel(List<TableLabel> lstTable) {
         this.lstTable = lstTable;
         this.setPreferredSize(new Dimension(799, 600));
         this.setLayout(null);
@@ -54,7 +55,7 @@ public class TableFloor1Panel extends JPanel implements MouseListener {
         content.setOpaque(false);
         
         int count = 0;
-        for (Table t : lstTable) {
+        for (TableLabel t : lstTable) {
             if (count < 10) {
                 count++;      
                 JPanel pnTable = new JPanel(null);                
@@ -83,7 +84,7 @@ public class TableFloor1Panel extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         JLabel lbl = (JLabel) e.getComponent();
-        for (Table t : lstTable) {
+        for (TableLabel t : lstTable) {
             if (t == lbl) {
                 new PresentOrderFrame().setVisible(true);
             }

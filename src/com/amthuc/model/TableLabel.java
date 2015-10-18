@@ -11,7 +11,7 @@ import javax.swing.JLabel;
  *
  * @author Pia
  */
-public class Table {
+public class TableLabel extends JLabel {
 
     private int id;
     private String name;
@@ -19,15 +19,20 @@ public class Table {
     private int type;
     private int status;
 
-    public Table() {
+    private TableLabel(Table table) {
+        this.id = table.getId();
+        this.name = table.getName();
+        this.area = table.getArea();
+        this.type = table.getType();
+        this.status = table.getStatus();
     }
 
-    public Table(int id, String name) {
+    public TableLabel(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Table(int id, String name, int area, int type, int status) {
+    public TableLabel(int id, String name, int area, int type, int status) {
         this.id = id;
         this.name = name;
         this.area = area;
@@ -35,13 +40,13 @@ public class Table {
         this.status = status;
     }
 
-    public Table(int id, String name, int area) {
+    public TableLabel(int id, String name, int area) {
         this.id = id;
         this.name = name;
         this.area = area;
     }
 
-    public Table(int id, String name, int area, int type) {
+    public TableLabel(int id, String name, int area, int type) {
         this.id = id;
         this.name = name;
         this.area = area;
