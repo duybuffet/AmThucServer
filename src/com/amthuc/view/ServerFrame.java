@@ -102,9 +102,6 @@ public class ServerFrame extends javax.swing.JFrame {
                 sendListCategory(message, client);
                 break;
                 
-            case GLOBAL.FROM_CLIENT.LIST_DISH_BY_CATEGORY:
-                sendListDishByCategory(message, client);
-                break;
         }
     }
 
@@ -199,14 +196,6 @@ public class ServerFrame extends javax.swing.JFrame {
         Message mes = new Message();
         mes.setMsgID(GLOBAL.TO_CLIENT.LIST_CATEGORY);
         mes.setArrCategories(categoryDAO.getAll());
-        sendMessageToClient(mes, client);
-    }
-
-    private void sendListDishByCategory(Message message, Client client) throws ClassNotFoundException, SQLException {
-        Message mes = new Message();
-        mes.setMsgID(GLOBAL.TO_CLIENT.LIST_DISH_BY_CATEGORY);
-        int catId = Integer.parseInt(message.getMsg());
-        mes.setArrDishes(dishDAO.getByCategory(catId));
         sendMessageToClient(mes, client);
     }
 
