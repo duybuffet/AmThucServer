@@ -100,15 +100,16 @@ public class OrderDAO {
         }
     }
 
-    public void update(Order order) throws ClassNotFoundException, SQLException {
-        String query = "UPDATE tbl_order SET order_table =?,description =?,total_cost =?,order_time =?,pantry_complete_time =? WHERE id = ?";
+    public void update(Order order) throws ClassNotFoundException, SQLException {        
+        String query = "UPDATE tbl_order SET order_table = ?,description = ?,total_cost = ?,order_time = ?,pantry_complete_time = ?, status = ? WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, order.getOrderTable().getId());
         ps.setString(2, order.getDescription());
         ps.setDouble(3, order.getTotalCost());
         ps.setString(4, order.getOrderTime());
         ps.setString(5, order.getPantryCompleteTime());
-        ps.setInt(6, order.getId());
+        ps.setInt(6, order.getStatus());
+        ps.setInt(7, order.getId());
         ps.executeUpdate();
     }
 
@@ -121,10 +122,10 @@ public class OrderDAO {
     
     public static void main(String[] args) {
         try {
-            Order order = new Order(new Table(1, ""), "nothing", 0.0, 1, "2015-10-20 11:12:49", "2015-10-20 11:12:49", new User(5, null, null, 1));
+            Order order = new Order(2, new Table(2, ""), "nothing in ur eyes", 7.0, 2, "2016-10-20 11:12:49", "2017-10-20 11:12:49", new User(5, null, null, 1));
             OrderDetails detail = new OrderDetails(0, 2, order, new Dish(1));
             order.getItems().add(detail);            
-            new OrderDAO().insert(order);
+            new OrderDAO().update(order);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

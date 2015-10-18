@@ -8,6 +8,7 @@ package com.amthuc.view;
 import com.amthuc.dao.CategoryDAO;
 import com.amthuc.dao.DishDAO;
 import com.amthuc.dao.OrderDAO;
+import com.amthuc.dao.OrderDetailsDAO;
 import com.amthuc.dao.TableDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.User;
@@ -34,8 +35,7 @@ import javax.swing.UIManager;
  *
  * @author Pia
  */
-public class ServerFrame extends javax.swing.JFrame {
-
+public class ServerFrame extends javax.swing.JFrame {   
     /**
      * Creates new form MainFrame
      */
@@ -56,17 +56,6 @@ public class ServerFrame extends javax.swing.JFrame {
             System.exit(1);
         }
     }
-
-    private int port = 2015;
-    private ServerSocket myServer;
-    private ArrayList<Client> arrClients = new ArrayList<Client>();
-    private ArrayList<User> arrUsers = new ArrayList<User>();
-    private UserDAO userDao = new UserDAO();
-    private CategoryDAO categoryDAO = new CategoryDAO();
-    private DishDAO dishDAO = new DishDAO();
-    private TableDAO tableDAO = new TableDAO();
-    private OrderDAO orderDAO = new OrderDAO();
-    
 
     public void listening() throws NullPointerException, IOException {
         while (true) {
@@ -101,17 +90,33 @@ public class ServerFrame extends javax.swing.JFrame {
             case GLOBAL.FROM_CLIENT.CHAT:
                 sendChatMessage(message, client);
                 break;
-            
+
             case GLOBAL.FROM_CLIENT.LIST_CATEGORY:
                 sendListCategory(message, client);
                 break;
-            
+
             case GLOBAL.FROM_CLIENT.LOAD_TABLES:
                 sendListTable(message, client);
                 break;
-                
+
             case GLOBAL.FROM_CLIENT.ADD_ORDER:
                 addOrder(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.UPDATE_ORDER:
+                updateOrder(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.ADD_LINE_TO_ORDER:
+                addLineOrder(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.UPDATE_LINE_OF_ORDER:
+                updateLineOrder(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.DELETE_LINE_OF_ORDER:
+                deleteLineOrder(message, client);
                 break;
         }
     }
@@ -132,7 +137,7 @@ public class ServerFrame extends javax.swing.JFrame {
         }
     }
 
-    public void checkLogin(Message msg, Client client) throws SQLException, ClassNotFoundException {
+    private void checkLogin(Message msg, Client client) throws SQLException, ClassNotFoundException {
         Message rs = new Message();
         User user = userDao.login(msg.getUser());
         rs.setMsgID(GLOBAL.TO_CLIENT.LOGIN);
@@ -151,7 +156,7 @@ public class ServerFrame extends javax.swing.JFrame {
         sendMessageToClient(rs, client);
     }
 
-    public void doLogout(Message msg, Client client) {
+    private void doLogout(Message msg, Client client) {
         System.out.println("Người chơi đăng xuất");
         System.out.println(client.getUser().toString());
         for (User user : arrUsers) {
@@ -175,7 +180,7 @@ public class ServerFrame extends javax.swing.JFrame {
         updatePlayersList();
     }
 
-    public void updatePlayersList() {
+    private void updatePlayersList() {
         System.out.println("Cập nhật danh sách người chơi ( "
                 + arrUsers.size() + " ) : ");
         for (User player : arrUsers) {
@@ -194,12 +199,12 @@ public class ServerFrame extends javax.swing.JFrame {
         }
     }
 
-    public void confirmConnection(Message msg, Client client) {
+    private void confirmConnection(Message msg, Client client) {
         sendMessageToClient(new Message(GLOBAL.TO_CLIENT.CONNECT, "SUCCESS"),
                 client);
     }
 
-    public void sendMessageToClient(Message msg, Client client) {
+    private void sendMessageToClient(Message msg, Client client) {
         client.sendMessage(msg);
     }
 
@@ -222,6 +227,7 @@ public class ServerFrame extends javax.swing.JFrame {
         mes.setMsgID(GLOBAL.TO_CLIENT.ADD_ORDER);
         try {
             orderDAO.insert(message.getOrder());
+            mes.setMsg("SUCCESS");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
             mes.setMsg("FAIL");
@@ -230,7 +236,75 @@ public class ServerFrame extends javax.swing.JFrame {
             mes.setMsg("FAIL");
         } finally {
             sendMessageToClient(mes, client);
-        }                
+        }
+    }
+
+    private void updateOrder(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.UPDATE_ORDER);
+        try {
+            orderDAO.update(message.getOrder());
+            mes.setMsg("SUCCESS");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } finally {
+            sendMessageToClient(mes, client);
+        }
+    }
+
+    private void addLineOrder(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.ADD_LINE_TO_ORDER);
+        try {
+            orderDetailsDAO.insert(message.getOrderDetails());
+            mes.setMsg("SUCCESS");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } finally {
+            sendMessageToClient(mes, client);
+        }
+    }
+
+    private void updateLineOrder(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.UPDATE_LINE_OF_ORDER);
+        try {
+            orderDetailsDAO.update(message.getOrderDetails());
+            mes.setMsg("SUCCESS");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } finally {
+            sendMessageToClient(mes, client);
+        }
+    }
+
+    private void deleteLineOrder(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.DELETE_LINE_OF_ORDER);
+        try {
+            orderDetailsDAO.delete(message.getOrderDetails());
+            mes.setMsg("SUCCESS");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } finally {
+            sendMessageToClient(mes, client);
+        }
     }
 
     public class ProcessMessage implements Client.onMessageReceived {
@@ -298,7 +372,7 @@ public class ServerFrame extends javax.swing.JFrame {
             Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         /* Set the Nimbus look and feel */
-            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
             /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
@@ -318,7 +392,7 @@ public class ServerFrame extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ServerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-            //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -340,6 +414,16 @@ public class ServerFrame extends javax.swing.JFrame {
     }
 
     private MenuPanel menuPanel;
+    private int port = 2015;
+    private ServerSocket myServer;
+    private ArrayList<Client> arrClients = new ArrayList<Client>();
+    private ArrayList<User> arrUsers = new ArrayList<User>();
+    private UserDAO userDao = new UserDAO();
+    private CategoryDAO categoryDAO = new CategoryDAO();
+    private DishDAO dishDAO = new DishDAO();
+    private TableDAO tableDAO = new TableDAO();
+    private OrderDAO orderDAO = new OrderDAO();
+    private OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane mainSplitPane;
     // End of variables declaration//GEN-END:variables

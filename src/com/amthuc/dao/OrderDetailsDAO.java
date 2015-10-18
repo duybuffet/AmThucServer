@@ -42,9 +42,24 @@ public class OrderDetailsDAO {
         String query = "INSERT INTO tbl_order_details (display_price,quantity,order_id,dish_id) VALUES(?,?,?,?)";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setFloat(1, details.getDisplayPrice());
-        ps.setDouble(2, details.getQuantity());
+        ps.setInt(2, details.getQuantity());
         ps.setInt(3, details.getOrder().getId());
         ps.setInt(4, details.getDish().getId());
+        ps.executeUpdate();
+    }
+    
+    public void update(OrderDetails details) throws ClassNotFoundException, SQLException {
+        String query = "UPDATE tbl_order_details SET quantity = ? WHERE id = ?";
+        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setInt(1, details.getQuantity());
+        ps.setInt(2, details.getId());
+        ps.executeUpdate();
+    }
+    
+    public void delete(OrderDetails details) throws ClassNotFoundException, SQLException {
+        String query = "DELETE FROM tbl_order_details WHERE id = ?";
+        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setInt(1, details.getId());
         ps.executeUpdate();
     }
 }

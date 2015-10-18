@@ -3,6 +3,7 @@ package com.amthuc.server;
 import com.amthuc.model.Category;
 import com.amthuc.model.Dish;
 import com.amthuc.model.Order;
+import com.amthuc.model.OrderDetails;
 import com.amthuc.model.Table;
 import com.amthuc.model.User;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class Message {
     private List<Dish> arrDishes;
     private List<Table> arrTables;
     private Order order;
+    private OrderDetails orderDetails;
 
     public User getTarget() {
         return target;
@@ -129,6 +131,14 @@ public class Message {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public OrderDetails getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(OrderDetails orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
 }

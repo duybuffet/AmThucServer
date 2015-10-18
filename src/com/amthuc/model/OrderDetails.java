@@ -20,6 +20,15 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
+    public OrderDetails(int id) {
+        this.id = id;
+    }
+
+    public OrderDetails(int id, int quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
+
     public OrderDetails(float displayPrice, int quantity, Dish dish) {
         this.displayPrice = displayPrice;
         this.quantity = quantity;
