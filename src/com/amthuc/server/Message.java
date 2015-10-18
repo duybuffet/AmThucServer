@@ -2,6 +2,7 @@ package com.amthuc.server;
 
 import com.amthuc.model.Category;
 import com.amthuc.model.Dish;
+import com.amthuc.model.Table;
 import com.amthuc.model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Message {
     private User target;
     private List<Category> arrCategories;
     private List<Dish> arrDishes;
+    private List<Table> arrTables;
 
     public User getTarget() {
         return target;
@@ -109,6 +111,14 @@ public class Message {
 
     public void setArrDishes(List<Dish> arrDishes) {
         this.arrDishes = arrDishes;
+    }
+
+    public List<Table> getArrTables() {
+        return arrTables;
+    }
+
+    public void setArrTables(List<Table> arrTables) {
+        this.arrTables = arrTables;
     }
 
 }

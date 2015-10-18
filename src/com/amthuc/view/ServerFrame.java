@@ -7,6 +7,7 @@ package com.amthuc.view;
 
 import com.amthuc.dao.CategoryDAO;
 import com.amthuc.dao.DishDAO;
+import com.amthuc.dao.TableDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.User;
 import com.amthuc.server.Client;
@@ -62,6 +63,7 @@ public class ServerFrame extends javax.swing.JFrame {
     private UserDAO userDao = new UserDAO();
     private CategoryDAO categoryDAO = new CategoryDAO();
     private DishDAO dishDAO = new DishDAO();
+    private TableDAO tableDAO = new TableDAO();
     
 
     public void listening() throws NullPointerException, IOException {
@@ -205,7 +207,7 @@ public class ServerFrame extends javax.swing.JFrame {
     private void sendListTable(Message message, Client client) throws ClassNotFoundException, SQLException {
         Message mes = new Message();
         mes.setMsgID(GLOBAL.TO_CLIENT.LOAD_TABLES);
-        mes.setArrCategories(categoryDAO.getAll());
+        mes.setArrTables(tableDAO.getAll());
         sendMessageToClient(mes, client);
     }
 
