@@ -101,7 +101,10 @@ public class ServerFrame extends javax.swing.JFrame {
             case GLOBAL.FROM_CLIENT.LIST_CATEGORY:
                 sendListCategory(message, client);
                 break;
-                
+            
+            case GLOBAL.FROM_CLIENT.LOAD_TABLES:
+                sendListTable(message, client);
+                break;
         }
     }
 
@@ -195,6 +198,13 @@ public class ServerFrame extends javax.swing.JFrame {
     private void sendListCategory(Message message, Client client) throws ClassNotFoundException, SQLException {
         Message mes = new Message();
         mes.setMsgID(GLOBAL.TO_CLIENT.LIST_CATEGORY);
+        mes.setArrCategories(categoryDAO.getAll());
+        sendMessageToClient(mes, client);
+    }
+
+    private void sendListTable(Message message, Client client) throws ClassNotFoundException, SQLException {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.LOAD_TABLES);
         mes.setArrCategories(categoryDAO.getAll());
         sendMessageToClient(mes, client);
     }
