@@ -12,12 +12,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Pia
  */
 public class OrderDAO {
+
     public List<Order> getAll() throws SQLException, ClassNotFoundException {
         List<Order> result = new ArrayList<>();
         Order order = null;
@@ -38,7 +41,7 @@ public class OrderDAO {
         }
         return result;
     }
-    
+
     public Order get(int id) throws ClassNotFoundException, SQLException {
         Order order = null;
         String query = "SELECT * FROM tbl_order WHERE id = ?";
@@ -60,20 +63,43 @@ public class OrderDAO {
         }
         return order;
     }
-    
-    public boolean insert(Order order) throws ClassNotFoundException, SQLException {
-        TableDAO tblDao = new TableDAO();
-        String query = "INSERT INTO tbl_order (order_table,description,total_cost,order_time,pantry_complete_time) VALUES(?,?,?,?,?)";
-        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
-        ps.setInt(1, order.getOrderTable().getId());
-        ps.setString(2, order.getDescription());
-        ps.setDouble(3, order.getTotalCost());
-        ps.setString(4, order.getOrderTime());
-        ps.setString(5, order.getPantryCompleteTime());
-        ps.executeUpdate();        
-        return true;
-    } 
-    
+
+    public void insert(Order order) throws ClassNotFoundException, SQLException {
+        try {
+            TableDAO tblDao = new TableDAO();
+            OrderDetailsDAO odetailDao = new OrderDetailsDAO();
+            String query = "INSERT INTO tbl_order (order_table,description,total_cost,order_time,pantry_complete_time, status, waiter_id) VALUES(?,?,?,?,?,?,?)";
+            DBConnect.getConnection().setAutoCommit(false);
+            PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+            ps.setInt(1, order.getOrderTable().getId());
+            ps.setString(2, order.getDescription());
+            ps.setDouble(3, order.getTotalCost());
+            ps.setString(4, order.getOrderTime());
+            ps.setString(5, order.getPantryCompleteTime());
+            ps.setInt(6, order.getStatus());
+            ps.setInt(7, order.getWaiter().getId());
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                order.setId(id);
+                for (OrderDetails od : order.getItems()) {
+                    od.setOrder(order);
+                    odetailDao.insert(od);
+                }
+                DBConnect.getConnection().commit();
+            } else {
+                return;
+            }
+            
+        } catch (SQLException ex) {
+            DBConnect.getConnection().rollback();
+            ex.printStackTrace();
+        } finally {
+            DBConnect.getConnection().setAutoCommit(true);
+        }
+    }
+
     public void update(Order order) throws ClassNotFoundException, SQLException {
         String query = "UPDATE tbl_order SET order_table =?,description =?,total_cost =?,order_time =?,pantry_complete_time =? WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
@@ -84,12 +110,25 @@ public class OrderDAO {
         ps.setString(5, order.getPantryCompleteTime());
         ps.setInt(6, order.getId());
         ps.executeUpdate();
-    }        
-    
+    }
+
     public void delete(int id) throws ClassNotFoundException, SQLException {
         String query = "DELETE FROM tbl_order WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, id);
         ps.executeUpdate();
+    }
+    
+    public static void main(String[] args) {
+        try {
+            Order order = new Order(new Table(1, ""), "nothing", 0.0, 1, "2015-10-20 11:12:49", "2015-10-20 11:12:49", new User(5, null, null, 1));
+            OrderDetails detail = new OrderDetails(0, 2, order, new Dish(1));
+            order.getItems().add(detail);            
+            new OrderDAO().insert(order);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

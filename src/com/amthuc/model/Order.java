@@ -5,6 +5,7 @@
  */
 package com.amthuc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class Order {
     private List<OrderDetails> items;
 
     public Order() {
+        items = new ArrayList<>();
     }
 
     public Order(int id) {
@@ -38,6 +40,7 @@ public class Order {
         this.orderTime = orderTime;
         this.pantryCompleteTime = pantryCompleteTime;
         this.waiter = waiter;
+        this.items = new ArrayList<>();
     }
 
     public Order(int id, Table orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, User waiter) {
@@ -49,6 +52,7 @@ public class Order {
         this.orderTime = orderTime;
         this.pantryCompleteTime = pantryCompleteTime;        
         this.waiter = waiter;
+        this.items = new ArrayList<>();
     }
 
     public Order(Table orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, User waiter, List<OrderDetails> items) {
@@ -69,6 +73,7 @@ public class Order {
         this.status = status;
         this.orderTime = orderTime;
         this.pantryCompleteTime = pantryCompleteTime;        
+        this.items = new ArrayList<>();
     }
 
     public int getId() {

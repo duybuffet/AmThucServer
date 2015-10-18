@@ -7,6 +7,7 @@ package com.amthuc.view;
 
 import com.amthuc.dao.CategoryDAO;
 import com.amthuc.dao.DishDAO;
+import com.amthuc.dao.OrderDAO;
 import com.amthuc.dao.TableDAO;
 import com.amthuc.dao.UserDAO;
 import com.amthuc.model.User;
@@ -64,6 +65,7 @@ public class ServerFrame extends javax.swing.JFrame {
     private CategoryDAO categoryDAO = new CategoryDAO();
     private DishDAO dishDAO = new DishDAO();
     private TableDAO tableDAO = new TableDAO();
+    private OrderDAO orderDAO = new OrderDAO();
     
 
     public void listening() throws NullPointerException, IOException {
@@ -106,6 +108,10 @@ public class ServerFrame extends javax.swing.JFrame {
             
             case GLOBAL.FROM_CLIENT.LOAD_TABLES:
                 sendListTable(message, client);
+                break;
+                
+            case GLOBAL.FROM_CLIENT.ADD_ORDER:
+                addOrder(message, client);
                 break;
         }
     }
@@ -209,6 +215,22 @@ public class ServerFrame extends javax.swing.JFrame {
         mes.setMsgID(GLOBAL.TO_CLIENT.LOAD_TABLES);
         mes.setArrTables(tableDAO.getAll());
         sendMessageToClient(mes, client);
+    }
+
+    private void addOrder(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.ADD_ORDER);
+        try {
+            orderDAO.insert(message.getOrder());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            mes.setMsg("FAIL");
+        } finally {
+            sendMessageToClient(mes, client);
+        }                
     }
 
     public class ProcessMessage implements Client.onMessageReceived {
