@@ -125,18 +125,14 @@ public class OrderPanel extends javax.swing.JPanel {
             tblTitle.add("Ngày giờ đặt");
             tblTitle.add("Bàn");
             tblTitle.add("Tổng hóa đơn");
-            tblTitle.add("Chiết khấu");
             tblTitle.add("Trạng thái");
-            tblTitle.add("Nhân viên phục vụ");
             for (Order lc : listOrder) {
                 Vector record = new Vector();
                 record.add(lc.getId());
                 record.add(lc.getItems());
                 record.add(lc.getOrderTable());
                 record.add(lc.getTotalCost());
-                record.add(lc.getDiscount());
-                record.add(lc.getStatus());
-                record.add(lc.getDiscount());
+                record.add(lc.getStatus());                
                 tblRecords.add(record);
             }
             

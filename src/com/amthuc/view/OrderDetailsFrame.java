@@ -53,8 +53,6 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
         txtOrderTime = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtPatryCompleteTime = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        txtPaytime = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaDesc = new javax.swing.JTextArea();
@@ -114,16 +112,6 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Ngày giờ thanh toán");
-
-        txtPaytime.setEditable(false);
-        txtPaytime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPaytimeActionPerformed(evt);
-            }
-        });
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Mô tả");
 
@@ -157,12 +145,10 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                                 .addGap(91, 91, 91)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
-                                    .addComponent(jLabel5)
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtPaytime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                                    .addComponent(txtOrderTime, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtOrderTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                                     .addComponent(txtPatryCompleteTime, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addContainerGap())
         );
@@ -174,9 +160,7 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtPaytime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel2))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -211,10 +195,6 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
     private void txtPatryCompleteTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatryCompleteTimeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPatryCompleteTimeActionPerformed
-
-    private void txtPaytimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaytimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPaytimeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,7 +264,6 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                     txtId.setText(tblOrder.getValueAt(row, 0).toString());
                     txtOrderTime.setText(details.getOrder().getOrderTime());
                     txtPatryCompleteTime.setText(details.getOrder().getPantryCompleteTime());
-                    txtPaytime.setText(details.getOrder().getPayTime());
                     txaDesc.setText(details.getDish().getDescription());
                     
                 }
@@ -300,7 +279,6 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -309,6 +287,5 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtOrderTime;
     private javax.swing.JTextField txtPatryCompleteTime;
-    private javax.swing.JTextField txtPaytime;
     // End of variables declaration//GEN-END:variables
 }

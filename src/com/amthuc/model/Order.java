@@ -14,14 +14,12 @@ import java.util.List;
 public class Order {
 
     private int id;
-    private String orderTable;
+    private Table orderTable;
     private String description;
     private Double totalCost;
     private int status;
     private String orderTime;
     private String pantryCompleteTime;
-    private String payTime;
-    private int discount;
     private User waiter;
     private List<OrderDetails> items;
 
@@ -32,53 +30,45 @@ public class Order {
         this.id = id;
     }
     
-    public Order(String orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, String payTime, int discount, User waiter) {
+    public Order(Table orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, User waiter) {
         this.orderTable = orderTable;
         this.description = description;
         this.totalCost = totalCost;
         this.status = status;
         this.orderTime = orderTime;
         this.pantryCompleteTime = pantryCompleteTime;
-        this.payTime = payTime;
-        this.discount = discount;
         this.waiter = waiter;
     }
 
-    public Order(int id, String orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, String payTime, int discount, User waiter) {
+    public Order(int id, Table orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, User waiter) {
         this.id = id;
         this.orderTable = orderTable;
         this.description = description;
         this.totalCost = totalCost;
         this.status = status;
         this.orderTime = orderTime;
-        this.pantryCompleteTime = pantryCompleteTime;
-        this.payTime = payTime;
-        this.discount = discount;
+        this.pantryCompleteTime = pantryCompleteTime;        
         this.waiter = waiter;
     }
 
-    public Order(String orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, String payTime, int discount, User waiter, List<OrderDetails> items) {
+    public Order(Table orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, User waiter, List<OrderDetails> items) {
         this.orderTable = orderTable;
         this.description = description;
         this.totalCost = totalCost;
         this.status = status;
         this.orderTime = orderTime;
         this.pantryCompleteTime = pantryCompleteTime;
-        this.payTime = payTime;
-        this.discount = discount;
         this.waiter = waiter;
         this.items = items;
     }
 
-    public Order(String orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime, String payTime, int discount) {
+    public Order(Table orderTable, String description, Double totalCost, int status, String orderTime, String pantryCompleteTime) {
         this.orderTable = orderTable;
         this.description = description;
         this.totalCost = totalCost;
         this.status = status;
         this.orderTime = orderTime;
-        this.pantryCompleteTime = pantryCompleteTime;
-        this.payTime = payTime;
-        this.discount = discount;
+        this.pantryCompleteTime = pantryCompleteTime;        
     }
 
     public int getId() {
@@ -89,11 +79,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getOrderTable() {
+    public Table getOrderTable() {
         return orderTable;
     }
 
-    public void setOrderTable(String orderTable) {
+    public void setOrderTable(Table orderTable) {
         this.orderTable = orderTable;
     }
 
@@ -135,23 +125,7 @@ public class Order {
 
     public void setPantryCompleteTime(String pantryCompleteTime) {
         this.pantryCompleteTime = pantryCompleteTime;
-    }
-
-    public String getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(String payTime) {
-        this.payTime = payTime;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
+    }    
 
     public User getWaiter() {
         return waiter;
