@@ -34,13 +34,17 @@ import org.xml.sax.SAXException;
  */
 public class MenuPanel extends javax.swing.JPanel implements ActionListener, MouseListener {
 
+    public static List<Table> allTables;
+
     /**
      * Creates new form MenuPanel
      */
     public MenuPanel(ServerFrame serverFrame) {
+
         this.serverFrame = serverFrame;
         initComponents();
         init();
+
     }
 
     /**
@@ -155,6 +159,8 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
         } else if (btn == btnTable) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
         } else if (btn == btnOrder) {
+            orderPanel = null;
+            orderPanel = new OrderPanel();
             this.serverFrame.getMainSplitPane().setRightComponent(orderPanel);
         } else if (btn == btnLogout) {
             LoginPanel.userLogin = null;
@@ -166,7 +172,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
                 try {
                     user.setUsername(loginPanel.getTxtUName().getText());
                     user.setPassword(loginPanel.getTxtPass().getText());
-                    
+
                     UserDAO uDao = new UserDAO();
                     LoginPanel.userLogin = uDao.login_admin(user);
                     if (LoginPanel.userLogin != null) {
@@ -194,26 +200,29 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
         }
     }
 
-    private void init() {
+    public void init() {
         try {
             TableDAO tblDao = new TableDAO();
-            List<Table> all = tblDao.getAll();
-            
+            allTables = tblDao.getAll();
+
             lstTableFloor1 = new ArrayList<>();
             lstTableFloor2 = new ArrayList<>();
             lstTableFloor3 = new ArrayList<>();
-            
-            for (Table tbl : all) {
+
+            for (Table tbl : allTables) {
                 switch (tbl.getArea()) {
                     case GLOBAL.AREA.FLOOR_1:
+                        tbl.setStatus(GLOBAL.ORDER_AND_TABLE_STATUS.TABLE_FREE);
                         lstTableFloor1.add(new TableLabel(tbl));
-                        break;                    
+                        break;
                     case GLOBAL.AREA.FLOOR_2:
+                        tbl.setStatus(GLOBAL.ORDER_AND_TABLE_STATUS.TABLE_FREE);
                         lstTableFloor2.add(new TableLabel(tbl));
-                        break;                    
+                        break;
                     case GLOBAL.AREA.FLOOR_3:
+                        tbl.setStatus(GLOBAL.ORDER_AND_TABLE_STATUS.TABLE_FREE);
                         lstTableFloor3.add(new TableLabel(tbl));
-                        break;                    
+                        break;
                 }
             }
         } catch (ClassNotFoundException ex) {
@@ -296,7 +305,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
     public void mouseExited(MouseEvent e) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     private void showMessage(String msg) {
         JOptionPane.showMessageDialog(this, msg);
     }

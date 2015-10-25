@@ -23,6 +23,8 @@ public class GLOBAL {
         public static final int ADD_LINE_TO_ORDER = 13;
         public static final int UPDATE_LINE_OF_ORDER = 14;
         public static final int DELETE_LINE_OF_ORDER = 15;
+        public static final int CANCEL_ORDER = 16;
+        public static final int BILL = 17;
     }
 
     public static class FROM_CLIENT {
@@ -41,6 +43,8 @@ public class GLOBAL {
         public static final int ADD_LINE_TO_ORDER = 12;
         public static final int UPDATE_LINE_OF_ORDER = 13;
         public static final int DELETE_LINE_OF_ORDER = 14;
+        public static final int CANCEL_ORDER = 15;
+        public static final int BILL = 16;
     }
 
     public static class AREA {
@@ -81,10 +85,14 @@ public class GLOBAL {
     }
 
     public static class USER_LEVEL {
-
         public static final int ADMIN = 2;
         public static final int CHEF = 1;
         public static final int WAITER = 0;
         public static final String[] USER_LEVEL_DISPLAY = {"Bồi bàn", "Bếp", "Quản trị"};
+    }
+    
+    public static class CONFIG {
+        public static String SUCCESS = "SUCCESS";
+        public static String FAIL = "FAIL";
     }
 }

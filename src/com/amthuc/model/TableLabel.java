@@ -18,6 +18,7 @@ public class TableLabel extends JLabel {
     private int area;
     private int type;
     private int status;
+    private User waiter;
 
     public TableLabel(Table table) {
         this.id = table.getId();
@@ -91,6 +92,14 @@ public class TableLabel extends JLabel {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public User getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(User waiter) {
+        this.waiter = waiter;
     }
 
     @Override

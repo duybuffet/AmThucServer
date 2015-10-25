@@ -133,6 +133,7 @@ public class OrderPanel extends javax.swing.JPanel {
                 record.add(lc.getOrderTime());
                 record.add(lc.getOrderTable().getName());
                 record.add(lc.getTotalCost());
+                System.out.println("LC STATUS : " + lc.getStatus());
                 record.add(GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_DISPLAY[lc.getStatus()]);                
                 tblRecords.add(record);
             }

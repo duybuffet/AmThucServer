@@ -18,6 +18,7 @@ public class Table {
     private int area;
     private int type;
     private int status;
+    private User waiter;
 
     public Table() {
     }
@@ -86,6 +87,14 @@ public class Table {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public User getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(User waiter) {
+        this.waiter = waiter;
     }
 
     @Override

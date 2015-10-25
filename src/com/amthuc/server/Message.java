@@ -1,5 +1,6 @@
 package com.amthuc.server;
 
+import com.amthuc.model.Bill;
 import com.amthuc.model.Category;
 import com.amthuc.model.Dish;
 import com.amthuc.model.Order;
@@ -20,6 +21,7 @@ public class Message {
     private List<Dish> arrDishes;
     private List<Table> arrTables;
     private Order order;
+    private Bill bill;
     private OrderDetails orderDetails;
 
     public User getTarget() {
@@ -139,6 +141,14 @@ public class Message {
 
     public void setOrderDetails(OrderDetails orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
     }
 
 }

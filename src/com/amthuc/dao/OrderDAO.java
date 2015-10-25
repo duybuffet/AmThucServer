@@ -7,6 +7,7 @@ package com.amthuc.dao;
 
 import com.amthuc.model.*;
 import com.amthuc.utils.DBConnect;
+import com.amthuc.utils.GLOBAL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,13 +31,14 @@ public class OrderDAO {
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
+        while (rs.next()) {
             order = new Order();
             order.setId(rs.getInt("id"));
             order.setOrderTable(tblDao.get(rs.getInt("order_table")));
             order.setDescription(rs.getString("description"));
             order.setTotalCost(rs.getDouble("total_cost"));
             order.setOrderTime(rs.getString("order_time"));
+            order.setStatus(rs.getInt("status"));
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
             order.setItems(detailsDao.getByOrder(order.getId()));
             result.add(order);
@@ -68,6 +70,36 @@ public class OrderDAO {
         return order;
     }
 
+    public Order getOrderByTableID(int tableId) throws ClassNotFoundException, SQLException {
+        Order order = null;
+        String query = "SELECT * FROM tbl_order "
+                + "WHERE order_table = ? AND status IN (?,?,?) "
+                + "ORDER BY order_time DESC LIMIT 1";
+        TableDAO tblDao = new TableDAO();
+        OrderDetailsDAO detailsDao = new OrderDetailsDAO();
+
+        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setInt(1, tableId);
+        ps.setInt(2, GLOBAL.ORDER_AND_TABLE_STATUS.ORDERED);
+        ps.setInt(3, GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_READY_TO_SERVED);
+        ps.setInt(4, GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_SERVED);
+        
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            order = new Order();
+            order.setId(rs.getInt("id"));
+            order.setOrderTable(tblDao.get(rs.getInt("order_table")));
+            order.setDescription(rs.getString("description"));
+            order.setTotalCost(rs.getDouble("total_cost"));
+            order.setOrderTime(rs.getString("order_time"));
+            order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
+            order.setItems(detailsDao.getByOrder(order.getId()));
+            return order;
+        }
+        return order;
+    }
+
     public void insert(Order order) throws ClassNotFoundException, SQLException {
         try {
             TableDAO tblDao = new TableDAO();
@@ -89,13 +121,13 @@ public class OrderDAO {
                 order.setId(id);
                 for (OrderDetails od : order.getItems()) {
                     od.setOrder(order);
-                    odetailDao.insert(od);
+                    odetailDao.insert(od, id);
                 }
                 DBConnect.getConnection().commit();
             } else {
                 return;
             }
-            
+
         } catch (SQLException ex) {
             DBConnect.getConnection().rollback();
             ex.printStackTrace();
@@ -104,7 +136,7 @@ public class OrderDAO {
         }
     }
 
-    public void update(Order order) throws ClassNotFoundException, SQLException {        
+    public void update(Order order) throws ClassNotFoundException, SQLException {
         String query = "UPDATE tbl_order SET order_table = ?,description = ?,total_cost = ?,order_time = ?,pantry_complete_time = ?, status = ? WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, order.getOrderTable().getId());
@@ -116,6 +148,14 @@ public class OrderDAO {
         ps.setInt(7, order.getId());
         ps.executeUpdate();
     }
+    
+    public void cancel(Order order) throws ClassNotFoundException, SQLException {
+        String query = "UPDATE tbl_order SET status = ? WHERE id = ?";
+        PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
+        ps.setInt(1, GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_CANCEL);        
+        ps.setInt(2, order.getId());
+        ps.executeUpdate();
+    }
 
     public void delete(int id) throws ClassNotFoundException, SQLException {
         String query = "DELETE FROM tbl_order WHERE id = ?";
@@ -123,13 +163,15 @@ public class OrderDAO {
         ps.setInt(1, id);
         ps.executeUpdate();
     }
-    
+
     public static void main(String[] args) {
         try {
-            Order order = new Order(2, new Table(2, ""), "nothing in ur eyes", 7.0, 2, "2016-10-20 11:12:49", "2017-10-20 11:12:49", new User(5, null, null, 1));
-            OrderDetails detail = new OrderDetails(0, 2, order, new Dish(1));
-            order.getItems().add(detail);            
-            new OrderDAO().update(order);
+//            Order order = new Order(2, new Table(2, ""), "nothing in ur eyes", 7.0, 2, "2016-10-20 11:12:49", "2017-10-20 11:12:49", new User(5, null, null, 1));
+//            OrderDetails detail = new OrderDetails(0, 2, order, new Dish(1));
+//            order.getItems().add(detail);
+            Order o = new Order();
+            o.setId(42);
+            new OrderDAO().cancel(o);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
