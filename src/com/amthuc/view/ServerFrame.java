@@ -110,7 +110,7 @@ public class ServerFrame extends javax.swing.JFrame {
             case GLOBAL.FROM_CLIENT.ADD_ORDER:
                 addOrder(message, client);
                 break;
-                
+
             case GLOBAL.FROM_CLIENT.SHOW_ORDER:
                 showOrder(message, client);
                 break;
@@ -118,7 +118,7 @@ public class ServerFrame extends javax.swing.JFrame {
             case GLOBAL.FROM_CLIENT.UPDATE_ORDER:
                 updateOrder(message, client);
                 break;
-                
+
             case GLOBAL.FROM_CLIENT.CANCEL_ORDER:
                 cancelOrder(message, client);
 
@@ -133,7 +133,7 @@ public class ServerFrame extends javax.swing.JFrame {
             case GLOBAL.FROM_CLIENT.DELETE_LINE_OF_ORDER:
                 deleteLineOrder(message, client);
                 break;
-                
+
             case GLOBAL.FROM_CLIENT.BILL:
                 addBill(message, client);
                 break;
@@ -247,6 +247,19 @@ public class ServerFrame extends javax.swing.JFrame {
         try {
             orderDAO.insert(message.getOrder());
             mes.setMsg(GLOBAL.CONFIG.SUCCESS);
+            for (int i = 0; i < MenuPanel.allTables.size(); i++) {
+                if (MenuPanel.allTables.get(i).getId() == message.getOrder().getOrderTable().getId()) {
+                    MenuPanel.allTables.set(i, message.getOrder().getOrderTable());
+                }
+            }
+//            for (Client c : arrClients) {
+//                System.out.println(" ► " + c.getClient().getInetAddress()
+//                        + " - " + c.getClient().getPort());
+//                Message msg = new Message();
+//                msg.setArrTables(MenuPanel.allTables);
+//                msg.setMsgID(GLOBAL.TO_CLIENT.RELOAD_TABLES);
+//                sendMessageToClient(msg, client);
+//            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
             mes.setMsg(GLOBAL.CONFIG.FAIL);
@@ -291,7 +304,6 @@ public class ServerFrame extends javax.swing.JFrame {
 //            sendMessageToClient(mes, client);
 //        }
 //    }
-
     private void updateLineOrder(Message message, Client client) {
         Message mes = new Message();
         mes.setMsgID(GLOBAL.TO_CLIENT.UPDATE_LINE_OF_ORDER);
@@ -333,8 +345,7 @@ public class ServerFrame extends javax.swing.JFrame {
                 System.out.println(" ► " + c.getClient().getInetAddress()
                         + " - " + c.getClient().getPort());
                 Message msg = new Message();
-                msg.setArrTables(MenuPanel.allTables);
-                msg.setMsgID(GLOBAL.TO_CLIENT.RELOAD_TABLES);
+                msg.setArrTables(MenuPanel.allTables);                
                 sendMessageToClient(msg, client);
             }
         }
@@ -343,8 +354,8 @@ public class ServerFrame extends javax.swing.JFrame {
     private void showOrder(Message message, Client client) {
         Message mes = new Message();
         mes.setMsgID(GLOBAL.TO_CLIENT.SHOW_ORDER);
-        try {            
-            int tableId = Integer.parseInt(message.getMsg().trim());            
+        try {
+            int tableId = Integer.parseInt(message.getMsg().trim());
             mes.setMsg(GLOBAL.CONFIG.SUCCESS);
             mes.setOrder(orderDAO.getOrderByTableID(tableId));
         } catch (Exception ex) {
@@ -360,6 +371,12 @@ public class ServerFrame extends javax.swing.JFrame {
         try {
             orderDAO.cancel(message.getOrder());
             mes.setMsg(GLOBAL.CONFIG.SUCCESS);
+            for (int i = 0; i < MenuPanel.allTables.size(); i++) {
+                if (MenuPanel.allTables.get(i).getId() == message.getOrder().getOrderTable().getId()) {
+                    MenuPanel.allTables.set(i, message.getOrder().getOrderTable());
+                }
+            }
+            reloadTable(message, client);
         } catch (Exception ex) {
             mes.setMsg(GLOBAL.CONFIG.FAIL);
         } finally {

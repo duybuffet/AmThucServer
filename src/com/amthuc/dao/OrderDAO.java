@@ -64,6 +64,7 @@ public class OrderDAO {
             order.setTotalCost(rs.getDouble("total_cost"));
             order.setOrderTime(rs.getString("order_time"));
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
+            order.setStatus(rs.getInt("status"));
             order.setItems(detailsDao.getByOrder(id));
             return order;
         }
@@ -94,6 +95,7 @@ public class OrderDAO {
             order.setTotalCost(rs.getDouble("total_cost"));
             order.setOrderTime(rs.getString("order_time"));
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
+            order.setStatus(rs.getInt("status"));
             order.setItems(detailsDao.getByOrder(order.getId()));
             return order;
         }
@@ -169,9 +171,9 @@ public class OrderDAO {
 //            Order order = new Order(2, new Table(2, ""), "nothing in ur eyes", 7.0, 2, "2016-10-20 11:12:49", "2017-10-20 11:12:49", new User(5, null, null, 1));
 //            OrderDetails detail = new OrderDetails(0, 2, order, new Dish(1));
 //            order.getItems().add(detail);
-            Order o = new Order();
-            o.setId(42);
-            new OrderDAO().cancel(o);
+//            Order o = new Order();
+//            o.setId(42);
+            System.out.println(new OrderDAO().get(69).getStatus());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
