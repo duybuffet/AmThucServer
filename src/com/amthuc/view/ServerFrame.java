@@ -265,7 +265,7 @@ public class ServerFrame extends javax.swing.JFrame {
                 }
             }
             // reinit tables
-            menuPanel.init();
+            menuPanel.initAgain();
             // send to client list of new order details
             reloadOrderDetails(message, client);
         } catch (ClassNotFoundException ex) {

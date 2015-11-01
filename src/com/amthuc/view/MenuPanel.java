@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -35,6 +36,7 @@ import org.xml.sax.SAXException;
 public class MenuPanel extends javax.swing.JPanel implements ActionListener, MouseListener {
 
     public static List<Table> allTables;
+    public static JPanel currentPanel = null;
 
     /**
      * Creates new form MenuPanel
@@ -158,18 +160,23 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
         JButton btn = (JButton) e.getSource();
         if (btn == btnCategory) {
             this.serverFrame.getMainSplitPane().setRightComponent(categoryPanel);
+            currentPanel = categoryPanel;
         } else if (btn == btnUser) {
             this.serverFrame.getMainSplitPane().setRightComponent(userPanel);
+            currentPanel = userPanel;
         } else if (btn == btnTable) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
+            currentPanel = tableFloor1Panel;
         } else if (btn == btnOrder) {
             orderPanel = null;
             orderPanel = new OrderPanel();
             this.serverFrame.getMainSplitPane().setRightComponent(orderPanel);
+            currentPanel = orderPanel;
         } else if (btn == btnLogout) {
             LoginPanel.userLogin = null;
             this.serverFrame.getMainSplitPane().setRightComponent(loginPanel);
             this.serverFrame.getMainSplitPane().setLeftComponent(null);
+            currentPanel = null;
         } else if (btn == loginPanel.getBtnLogin()) {
             User user = new User();
             if (loginPanel.getTxtUName().getText().trim() != null && loginPanel.getTxtPass().getText().trim() != null) {
@@ -193,7 +200,7 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
                     Logger.getLogger(MenuPanel.class.getName()).log(Level.SEVERE, null, ex);
                     showMessage("Có lỗi xảy ra. Vui lòng thử lại sau");
                 }
-
+                currentPanel = loginPanel;
             }
             if (LoginPanel.userLogin != null) {
                 this.serverFrame.getMainSplitPane().setRightComponent(userPanel);
@@ -242,6 +249,42 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
         this.tableFloor1Panel.getLblPre().addMouseListener(this);
         this.tableFloor2Panel.getLblPre().addMouseListener(this);
         this.tableFloor3Panel.getLblPre().addMouseListener(this);
+
+    }
+
+    public void initAgain() {
+        lstTableFloor1 = new ArrayList<>();
+        lstTableFloor2 = new ArrayList<>();
+        lstTableFloor3 = new ArrayList<>();
+        for (Table tbl : allTables) {
+            switch (tbl.getArea()) {
+                case GLOBAL.AREA.FLOOR_1:
+                    lstTableFloor1.add(new TableLabel(tbl));
+                    break;
+                case GLOBAL.AREA.FLOOR_2:
+                    lstTableFloor2.add(new TableLabel(tbl));
+                    break;
+                case GLOBAL.AREA.FLOOR_3:
+                    lstTableFloor3.add(new TableLabel(tbl));
+                    break;
+            }
+        }
+        
+        tableFloor1Panel = new TableFloor1Panel(lstTableFloor1);
+        tableFloor2Panel = new TableFloor2Panel(lstTableFloor2);
+        tableFloor3Panel = new TableFloor3Panel(lstTableFloor3);
+        
+        this.tableFloor1Panel.getLblNext().addMouseListener(this);
+        this.tableFloor2Panel.getLblNext().addMouseListener(this);
+        this.tableFloor3Panel.getLblNext().addMouseListener(this);
+        this.tableFloor1Panel.getLblPre().addMouseListener(this);
+        this.tableFloor2Panel.getLblPre().addMouseListener(this);
+        this.tableFloor3Panel.getLblPre().addMouseListener(this);
+        if (currentPanel != null) {
+            this.serverFrame.getMainSplitPane().setRightComponent(null);
+            System.out.println("CUrrent not null + " + currentPanel.toString());
+            this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
+        }
     }
 
     private List<TableLabel> lstTableFloor1;
@@ -261,16 +304,22 @@ public class MenuPanel extends javax.swing.JPanel implements ActionListener, Mou
         JLabel lbl = (JLabel) e.getComponent();
         if (lbl == tableFloor1Panel.getLblNext()) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor2Panel);
+            currentPanel = tableFloor2Panel;
         } else if (lbl == tableFloor1Panel.getLblPre()) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor3Panel);
+            currentPanel = tableFloor3Panel;
         } else if (lbl == tableFloor2Panel.getLblNext()) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor3Panel);
+            currentPanel = tableFloor3Panel;
         } else if (lbl == tableFloor2Panel.getLblPre()) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
+            currentPanel = tableFloor1Panel;
         } else if (lbl == tableFloor3Panel.getLblNext()) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor1Panel);
+            currentPanel = tableFloor1Panel;
         } else if (lbl == tableFloor3Panel.getLblPre()) {
             this.serverFrame.getMainSplitPane().setRightComponent(tableFloor2Panel);
+            currentPanel = tableFloor2Panel;
         }
     }
 
