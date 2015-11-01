@@ -152,10 +152,14 @@ public class OrderDAO {
     }
     
     public void cancel(Order order) throws ClassNotFoundException, SQLException {
+        OrderDetailsDAO odDao = new OrderDetailsDAO();
         String query = "UPDATE tbl_order SET status = ? WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_CANCEL);        
         ps.setInt(2, order.getId());
+        for (OrderDetails od : odDao.getByOrder(order.getId())) {
+            odDao.delete(od);
+        }
         ps.executeUpdate();
     }
 

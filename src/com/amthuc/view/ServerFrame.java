@@ -123,15 +123,27 @@ public class ServerFrame extends javax.swing.JFrame {
                 cancelOrder(message, client);
 
             case GLOBAL.FROM_CLIENT.ADD_LINE_TO_ORDER:
-//                addLineOrder(message, client);
+                addLineOrder(message, client);
                 break;
 
             case GLOBAL.FROM_CLIENT.UPDATE_LINE_OF_ORDER:
-                updateLineOrder(message, client);
+//                updateLineOrder(message, client);
                 break;
 
             case GLOBAL.FROM_CLIENT.DELETE_LINE_OF_ORDER:
-                deleteLineOrder(message, client);
+//                deleteLineOrder(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.LOAD_ORDER_DETAILS:
+                loadOrderDetails(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.RELOAD_ORDER_DETAILS:
+                reloadOrderDetails(message, client);
+                break;
+
+            case GLOBAL.FROM_CLIENT.UPDATE_ORDER_DETAILS_STATUS:
+                updateOrderDetails(message, client);
                 break;
 
             case GLOBAL.FROM_CLIENT.BILL:
@@ -252,14 +264,10 @@ public class ServerFrame extends javax.swing.JFrame {
                     MenuPanel.allTables.set(i, message.getOrder().getOrderTable());
                 }
             }
-//            for (Client c : arrClients) {
-//                System.out.println(" ► " + c.getClient().getInetAddress()
-//                        + " - " + c.getClient().getPort());
-//                Message msg = new Message();
-//                msg.setArrTables(MenuPanel.allTables);
-//                msg.setMsgID(GLOBAL.TO_CLIENT.RELOAD_TABLES);
-//                sendMessageToClient(msg, client);
-//            }
+            // reinit tables
+            menuPanel.init();
+            // send to client list of new order details
+            reloadOrderDetails(message, client);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
             mes.setMsg(GLOBAL.CONFIG.FAIL);
@@ -345,7 +353,8 @@ public class ServerFrame extends javax.swing.JFrame {
                 System.out.println(" ► " + c.getClient().getInetAddress()
                         + " - " + c.getClient().getPort());
                 Message msg = new Message();
-                msg.setArrTables(MenuPanel.allTables);                
+                msg.setMsgID(GLOBAL.TO_CLIENT.RELOAD_TABLES);
+                msg.setArrTables(MenuPanel.allTables);
                 sendMessageToClient(msg, client);
             }
         }
@@ -377,6 +386,7 @@ public class ServerFrame extends javax.swing.JFrame {
                 }
             }
             reloadTable(message, client);
+            reloadOrderDetails(message, client);
         } catch (Exception ex) {
             mes.setMsg(GLOBAL.CONFIG.FAIL);
         } finally {
@@ -396,6 +406,43 @@ public class ServerFrame extends javax.swing.JFrame {
             mes.setMsg(GLOBAL.CONFIG.FAIL);
         } finally {
             client.sendMessage(mes);
+        }
+    }
+
+    private void addLineOrder(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.ADD_LINE_TO_ORDER);
+
+    }
+
+    private void loadOrderDetails(Message message, Client client) throws ClassNotFoundException, SQLException {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.LOAD_ORDER_DETAILS);
+        mes.setArrOrderDetails(orderDetailsDAO.getAll());
+        sendMessageToClient(mes, client);
+    }
+
+    private void updateOrderDetails(Message message, Client client) {
+        Message mes = new Message();
+        mes.setMsgID(GLOBAL.TO_CLIENT.UPDATE_ORDER_DETAILS_STATUS);
+        try {
+            orderDetailsDAO.update(message.getOrderDetails());
+            mes.setMsg(GLOBAL.CONFIG.SUCCESS);
+        } catch (Exception ex) {
+            mes.setMsg(GLOBAL.CONFIG.FAIL);
+        } finally {
+            sendMessageToClient(mes, client);
+        }
+    }
+
+    private void reloadOrderDetails(Message message, Client client) throws ClassNotFoundException, SQLException {
+        for (Client c : arrClients) {
+            System.out.println(" ► " + c.getClient().getInetAddress()
+                    + " - " + c.getClient().getPort());
+            Message msg = new Message();
+            msg.setMsgID(GLOBAL.TO_CLIENT.LOAD_ORDER_DETAILS);
+            msg.setArrOrderDetails(orderDetailsDAO.getAll());
+            sendMessageToClient(msg, client);
         }
     }
 

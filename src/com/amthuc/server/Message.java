@@ -20,6 +20,7 @@ public class Message {
     private List<Category> arrCategories;
     private List<Dish> arrDishes;
     private List<Table> arrTables;
+    private List<OrderDetails> arrOrderDetails;
     private Order order;
     private Bill bill;
     private OrderDetails orderDetails;
@@ -149,6 +150,14 @@ public class Message {
 
     public void setBill(Bill bill) {
         this.bill = bill;
+    }
+
+    public List<OrderDetails> getArrOrderDetails() {
+        return arrOrderDetails;
+    }
+
+    public void setArrOrderDetails(List<OrderDetails> arrOrderDetails) {
+        this.arrOrderDetails = arrOrderDetails;
     }
 
 }

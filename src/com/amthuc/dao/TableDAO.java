@@ -7,6 +7,7 @@ package com.amthuc.dao;
 
 import com.amthuc.model.Table;
 import com.amthuc.utils.DBConnect;
+import com.amthuc.utils.GLOBAL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,6 +52,7 @@ public class TableDAO {
             tbl.setName(rs.getString("name"));
             tbl.setArea(rs.getInt("area"));
             tbl.setType(rs.getInt("type"));
+            tbl.setStatus(GLOBAL.ORDER_AND_TABLE_STATUS.TABLE_FREE);
             result.add(tbl);
         }
         return result;

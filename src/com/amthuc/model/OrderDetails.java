@@ -14,8 +14,10 @@ public class OrderDetails {
     private int id;
     private float displayPrice;
     private int quantity;
+    private int status;
     private Order order;
     private Dish dish;
+    private User chef;
 
     public OrderDetails() {
     }
@@ -80,6 +82,22 @@ public class OrderDetails {
 
     public void setDish(Dish dish) {
         this.dish = dish;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public User getChef() {
+        return chef;
+    }
+
+    public void setChef(User chef) {
+        this.chef = chef;
     }
 
 }

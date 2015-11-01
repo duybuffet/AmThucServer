@@ -25,6 +25,9 @@ public class GLOBAL {
         public static final int DELETE_LINE_OF_ORDER = 15;
         public static final int CANCEL_ORDER = 16;
         public static final int BILL = 17;
+        public static final int LOAD_ORDER_DETAILS = 18;
+        public static final int UPDATE_ORDER_DETAILS_STATUS = 19;
+        public static final int RELOAD_ORDER_DETAILS = 20;
     }
 
     public static class FROM_CLIENT {
@@ -45,6 +48,9 @@ public class GLOBAL {
         public static final int DELETE_LINE_OF_ORDER = 14;
         public static final int CANCEL_ORDER = 15;
         public static final int BILL = 16;
+        public static final int LOAD_ORDER_DETAILS = 17;
+        public static final int UPDATE_ORDER_DETAILS_STATUS = 18;
+        public static final int RELOAD_ORDER_DETAILS = 19;
     }
 
     public static class AREA {
@@ -74,6 +80,13 @@ public class GLOBAL {
         public static final String[] ORDER_DISPLAY = {"Bàn trống", "Chưa gọi món", 
                                 "Đã gọi món", "Món sẵn sàng phục vụ", "Đã phục vụ", 
                                 "Đã thanh toán", "Hủy"};
+    }
+    
+    public static class ORDER_DETAILS_STATUS {
+        public static final int WAITING = 0;
+        public static final int CONFIRM = 1;
+        public static final int FINISH = 2;
+        public static final int CANCEL = 3;
     }
 
     public static class DISH_UNIT {

@@ -6,6 +6,7 @@
 package com.amthuc.view;
 
 import com.amthuc.model.TableLabel;
+import com.amthuc.utils.GLOBAL;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -58,7 +59,23 @@ public class TableFloor3Panel extends JPanel implements MouseListener {
             if (count < 8) {
                 count++;      
                 JPanel pnTable = new JPanel(null);                
-                t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_8-0.png")));                
+                switch (t.getStatus()) {
+                    case GLOBAL.ORDER_AND_TABLE_STATUS.TABLE_FREE:
+                        t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_8-0.png")));
+                        break;
+
+                    case GLOBAL.ORDER_AND_TABLE_STATUS.NOT_YET_ORDER:
+                        t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_8-1.png")));
+                        break;
+
+                    case GLOBAL.ORDER_AND_TABLE_STATUS.ORDERED:
+                        t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_8-2.png")));
+                        break;
+
+                    default:
+                        t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_8-0.png")));
+                        break;
+                }
                 t.setText(t.getName());
                 t.setVerticalTextPosition(JLabel.BOTTOM);
                 t.setHorizontalTextPosition(JLabel.CENTER);
