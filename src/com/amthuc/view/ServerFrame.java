@@ -154,7 +154,7 @@ public class ServerFrame extends javax.swing.JFrame {
 
     public void sendChatMessage(Message message, Client client) {
         try {
-            System.out.println(message.getUser().getUsername() + " Gửi tin nhắn đến người chơi "
+            System.out.println(message.getUser().getUsername() + " Gửi tin nhắn đến người dùng "
                     + message.getTarget().getUsername());
             for (Client cl : arrClients) {
                 if (cl.getUser().getUsername().equals(message.getTarget().getUsername())) {
@@ -188,7 +188,7 @@ public class ServerFrame extends javax.swing.JFrame {
     }
 
     private void doLogout(Message msg, Client client) {
-        System.out.println("Người chơi đăng xuất");
+        System.out.println("Người dùng đăng xuất");
         System.out.println(client.getUser().toString());
         for (User user : arrUsers) {
             if (user.getUsername().equals(client.getUser().getUsername())) {
@@ -212,7 +212,7 @@ public class ServerFrame extends javax.swing.JFrame {
     }
 
     private void updatePlayersList() {
-        System.out.println("Cập nhật danh sách người chơi ( "
+        System.out.println("Cập nhật danh sách người dùng ( "
                 + arrUsers.size() + " ) : ");
         for (User player : arrUsers) {
             System.out.println(" ► " + player.getId() + " - "
