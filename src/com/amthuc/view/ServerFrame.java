@@ -49,11 +49,11 @@ public class ServerFrame extends javax.swing.JFrame {
         try {
             myServer = new ServerSocket(port);
 
-            // Fake danh sách người dung
-            for (int i = 1; i <= 5; i++) {
-                User user = new User(i, "Player0" + i, "123456", 1, 1);
-                this.arrUsers.add(user);
-            }
+//            // Fake danh sách người dung
+//            for (int i = 1; i <= 5; i++) {
+//                User user = new User(i, "Bôi bàn " + i, "123456", 1, 1);
+//                this.arrUsers.add(user);
+//            }
             System.out.print("Server is running ... ");
         } catch (Exception e) {
             e.printStackTrace();
