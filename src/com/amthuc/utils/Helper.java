@@ -10,6 +10,8 @@ import com.amthuc.model.TableLabel;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -40,13 +42,13 @@ public class Helper {
         Document document = builder.parse(new File(fileName));
 
         NodeList nodeList = document.getDocumentElement().getChildNodes();
-        
+
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
 
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element elem = (Element) node;
-                
+
                 // Get the value of the ID attribute.
                 Integer ID = Integer.parseInt(node.getAttributes().getNamedItem("ID").getNodeValue());
                 // Get the value of all sub-elements.
@@ -55,18 +57,35 @@ public class Helper {
 
                 Integer floor = Integer.parseInt(elem.getElementsByTagName("Floor")
                         .item(0).getChildNodes().item(0).getNodeValue());
-                
+
                 Integer type = Integer.parseInt(elem.getElementsByTagName("Type")
                         .item(0).getChildNodes().item(0).getNodeValue());
 
-                
                 if (_floor == floor) {
-                    lst.add(new TableLabel(ID, name, floor, type));  
+                    lst.add(new TableLabel(ID, name, floor, type));
                 }
-                
+
             }
         }
 
         return lst;
-    }        
+    }
+
+    public static String formatNumber(Double number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+        try {
+            NumberFormat formatter = new DecimalFormat("###,###");
+            String resp = formatter.format(number);
+            resp = resp.replaceAll(",", ".");
+            return resp;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public static String formatNumber(Float number) {
+        return formatNumber(Double.parseDouble(String.valueOf(number)));
+    }
 }

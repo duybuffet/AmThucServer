@@ -25,7 +25,7 @@ public class OrderDAO {
     public List<Order> getAll() throws SQLException, ClassNotFoundException {
         List<Order> result = new ArrayList<>();
         Order order = null;
-        String query = "SELECT * FROM tbl_order";
+        String query = "SELECT * FROM tbl_order ORDER BY status, order_time DESC";
         TableDAO tblDao = new TableDAO();
         OrderDetailsDAO detailsDao = new OrderDetailsDAO();
 
@@ -51,6 +51,7 @@ public class OrderDAO {
         String query = "SELECT * FROM tbl_order WHERE id = ?";
         TableDAO tblDao = new TableDAO();
         OrderDetailsDAO detailsDao = new OrderDetailsDAO();
+        UserDAO uDao = new UserDAO();
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, id);
@@ -66,6 +67,7 @@ public class OrderDAO {
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
             order.setStatus(rs.getInt("status"));
             order.setItems(detailsDao.getByOrder(id));
+            order.setWaiter(uDao.get(rs.getInt("waiter_id")));
             return order;
         }
         return order;
@@ -78,6 +80,7 @@ public class OrderDAO {
                 + "ORDER BY order_time DESC LIMIT 1";
         TableDAO tblDao = new TableDAO();
         OrderDetailsDAO detailsDao = new OrderDetailsDAO();
+        UserDAO uDao = new UserDAO();
 
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, tableId);
@@ -97,6 +100,7 @@ public class OrderDAO {
             order.setPantryCompleteTime(rs.getString("pantry_complete_time"));
             order.setStatus(rs.getInt("status"));
             order.setItems(detailsDao.getByOrder(order.getId()));
+            order.setWaiter(uDao.get(rs.getInt("waiter_id")));
             return order;
         }
         return order;

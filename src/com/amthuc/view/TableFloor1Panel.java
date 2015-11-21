@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -72,7 +73,7 @@ public class TableFloor1Panel extends JPanel implements MouseListener {
                     case GLOBAL.ORDER_AND_TABLE_STATUS.ORDERED:
                         t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_2-2.png")));
                         break;
-                        
+
                     default:
                         t.setIcon(new ImageIcon(getClass().getResource("/image/rsz_2-0.png")));
                         break;
@@ -101,11 +102,16 @@ public class TableFloor1Panel extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        boolean flag = true;
         JLabel lbl = (JLabel) e.getComponent();
         for (TableLabel t : lstTable) {
-            if (t == lbl) {
-                new PresentOrderFrame().setVisible(true);
+            if (t == lbl && t.getStatus() == GLOBAL.ORDER_AND_TABLE_STATUS.ORDERED) {
+                new PresentOrderFrame(t).setVisible(true);
+                flag = false;
             }
+        }
+        if (flag) {
+            showMessage("Bàn chưa có order");
         }
     }
 
@@ -127,5 +133,9 @@ public class TableFloor1Panel extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Thông tin order", 1);
     }
 }

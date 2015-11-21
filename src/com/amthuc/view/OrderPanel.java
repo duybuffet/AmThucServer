@@ -10,10 +10,16 @@ import com.amthuc.dao.UserDAO;
 import com.amthuc.model.Order;
 import com.amthuc.model.User;
 import com.amthuc.utils.GLOBAL;
+import com.amthuc.utils.Helper;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,13 +30,19 @@ import javax.swing.table.DefaultTableModel;
  * @author Pia
  */
 public class OrderPanel extends javax.swing.JPanel {
-    public static int orderID = -1;
+
+    private int orderID = -1;
+
     /**
      * Creates new form OrderPanel
      */
     public OrderPanel() {
-        initComponents();
-        initTable();
+        try {
+            initComponents();
+            initTable();
+        } catch (ParseException ex) {
+            Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -110,13 +122,13 @@ public class OrderPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOrderDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderDetailsActionPerformed
-        if(orderID != -1){
-            new OrderDetailsFrame().setVisible(true);
+        if (orderID != -1) {
+            new OrderDetailsFrame(orderID).setVisible(true);
         }
     }//GEN-LAST:event_btnOrderDetailsActionPerformed
 
-    private void initTable() {
-        try {   
+    private void initTable() throws ParseException {
+        try {
             OrderDAO dao = new OrderDAO();
             ArrayList<Order> listOrder = new ArrayList<>();
             listOrder = (ArrayList<Order>) dao.getAll();
@@ -128,16 +140,20 @@ public class OrderPanel extends javax.swing.JPanel {
             tblTitle.add("Tổng hóa đơn");
             tblTitle.add("Trạng thái");
             for (Order lc : listOrder) {
+                SimpleDateFormat fromDb = new SimpleDateFormat(GLOBAL.CONFIG.TIME_FORMAT);
+                SimpleDateFormat myFormat = new SimpleDateFormat(GLOBAL.CONFIG.TIME_DISPLAY);
+                String reformattedStr = "";
+                reformattedStr = myFormat.format(fromDb.parse(lc.getOrderTime()));
+
                 Vector record = new Vector();
                 record.add(lc.getId());
-                record.add(lc.getOrderTime());
+                record.add(reformattedStr);
                 record.add(lc.getOrderTable().getName());
-                record.add(lc.getTotalCost());
-                System.out.println("LC STATUS : " + lc.getStatus());
-                record.add(GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_DISPLAY[lc.getStatus()]);                
+                record.add(Helper.formatNumber(lc.getTotalCost()) + " VNĐ");
+                record.add(GLOBAL.ORDER_AND_TABLE_STATUS.ORDER_DISPLAY[lc.getStatus()]);
                 tblRecords.add(record);
             }
-            
+
             tblOrder.setModel(new DefaultTableModel(tblRecords, tblTitle));
             tblOrder.addMouseListener(new MouseAdapter() {
                 @Override

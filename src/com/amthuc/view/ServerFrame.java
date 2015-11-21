@@ -349,6 +349,8 @@ public class ServerFrame extends javax.swing.JFrame {
     private void reloadTable(Message message, Client client) {
         if (message.getArrTables() != null && message.getArrTables().size() > 0) {
             MenuPanel.allTables = message.getArrTables();
+            // reinit tables
+            menuPanel.initAgain();
             for (Client c : arrClients) {
                 System.out.println(" ► " + c.getClient().getInetAddress()
                         + " - " + c.getClient().getPort());
@@ -356,6 +358,7 @@ public class ServerFrame extends javax.swing.JFrame {
                 msg.setMsgID(GLOBAL.TO_CLIENT.RELOAD_TABLES);
                 msg.setArrTables(MenuPanel.allTables);
                 sendMessageToClient(msg, client);
+                
             }
         }
     }

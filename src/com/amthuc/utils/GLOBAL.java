@@ -107,5 +107,9 @@ public class GLOBAL {
     public static class CONFIG {
         public static String SUCCESS = "SUCCESS";
         public static String FAIL = "FAIL";
+        public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+        public static final String TIME_DISPLAY = "HH:mm:ss dd/MM/yyyy ";
+		public static final String DATE_DISPLAY_FORMAT = "dd/MM/yyyy";
     }
+   
 }

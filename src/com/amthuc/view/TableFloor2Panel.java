@@ -13,16 +13,19 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Pia
  */
-public class TableFloor2Panel extends JPanel {
+public class TableFloor2Panel extends JPanel implements MouseListener {
 
     private List<TableLabel> lstTable;
     private JLabel lblNext;
@@ -78,6 +81,7 @@ public class TableFloor2Panel extends JPanel {
                 t.setText(t.getName());
                 t.setVerticalTextPosition(JLabel.BOTTOM);
                 t.setHorizontalTextPosition(JLabel.CENTER);
+                t.addMouseListener(this);
                 content.add(t);
             } else {
                 break;
@@ -92,5 +96,44 @@ public class TableFloor2Panel extends JPanel {
 
     public JLabel getLblPre() {
         return lblPre;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        boolean flag = true;
+        JLabel lbl = (JLabel) e.getComponent();
+        for (TableLabel t : lstTable) {
+            if (t == lbl && t.getStatus() == GLOBAL.ORDER_AND_TABLE_STATUS.ORDERED) {
+                new PresentOrderFrame(t).setVisible(true);
+                flag = false;
+            }
+        }
+        if (flag) {
+            showMessage("Bàn chưa có order");
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void showMessage(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Thông tin order", 1);
     }
 }

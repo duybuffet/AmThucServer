@@ -6,11 +6,17 @@
 package com.amthuc.view;
 
 import com.amthuc.dao.DishDAO;
+import com.amthuc.dao.OrderDAO;
 import com.amthuc.dao.OrderDetailsDAO;
+import com.amthuc.model.Order;
 import com.amthuc.model.OrderDetails;
+import com.amthuc.utils.GLOBAL;
+import com.amthuc.utils.Helper;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -23,18 +29,23 @@ import javax.swing.table.DefaultTableModel;
  */
 public class OrderDetailsFrame extends javax.swing.JFrame {
 
-    private int o_id;
+    private int orderID;
     private ArrayList<OrderDetails> listOrder;
 
     /**
      * Creates new form OrderDetailsForm
      */
-    public OrderDetailsFrame() {
-        initComponents();
-        o_id = OrderPanel.orderID;
-        initTable();
-        setVisible(true);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    public OrderDetailsFrame(int orderId) {
+        try {
+            initComponents();
+            this.orderID = orderId;
+            initData();
+            initTable();
+            setVisible(true);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        } catch (ParseException ex) {
+            Logger.getLogger(OrderDetailsFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -52,9 +63,9 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtOrderTime = new javax.swing.JTextField();
+        txtWaiter = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtPatryCompleteTime = new javax.swing.JTextField();
+        txtOrderTime = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaDesc = new javax.swing.JTextArea();
@@ -97,20 +108,20 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Ngày giờ đặt");
 
-        txtOrderTime.setEditable(false);
-        txtOrderTime.addActionListener(new java.awt.event.ActionListener() {
+        txtWaiter.setEditable(false);
+        txtWaiter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtOrderTimeActionPerformed(evt);
+                txtWaiterActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("Ngày giờ hoàn thành");
+        jLabel4.setText("Nhân viên phục vụ");
 
-        txtPatryCompleteTime.setEditable(false);
-        txtPatryCompleteTime.addActionListener(new java.awt.event.ActionListener() {
+        txtOrderTime.setEditable(false);
+        txtOrderTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPatryCompleteTimeActionPerformed(evt);
+                txtOrderTimeActionPerformed(evt);
             }
         });
 
@@ -150,8 +161,8 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtOrderTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-                                    .addComponent(txtPatryCompleteTime, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                    .addComponent(txtWaiter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                                    .addComponent(txtOrderTime, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -168,14 +179,14 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtOrderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel4))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addComponent(jLabel6)))
                         .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtPatryCompleteTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtOrderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
@@ -190,63 +201,27 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtIdActionPerformed
 
+    private void txtWaiterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtWaiterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtWaiterActionPerformed
+
     private void txtOrderTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrderTimeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtOrderTimeActionPerformed
-
-    private void txtPatryCompleteTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatryCompleteTimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPatryCompleteTimeActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OrderDetailsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OrderDetailsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OrderDetailsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OrderDetailsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new OrderDetailsFrame().setVisible(true);
-            }
-        });
-    }
 
     private void initTable() {
         try {
 
             OrderDetailsDAO dao = new OrderDetailsDAO();
             listOrder = new ArrayList<>();
-            listOrder = (ArrayList<OrderDetails>) dao.getByOrder(o_id);
-            
+            listOrder = (ArrayList<OrderDetails>) dao.getByOrder(orderID);
+
             DefaultTableModel model = new DefaultTableModel(new String[]{"Món", "Giá", "Số lượng"}, 0);
-            
+
             for (OrderDetails lc : listOrder) {
-                model.addRow(new Object[]{lc.getDish().getName(), lc.getDisplayPrice(), lc.getQuantity()});
+                model.addRow(new Object[]{lc.getDish().getName(), Helper.formatNumber(lc.getDisplayPrice()) + " VNĐ", lc.getQuantity()});
             }
-            
+
             tblOrder.setModel(model);
             tblOrder.addMouseListener(new MouseAdapter() {
                 @Override
@@ -254,8 +229,8 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
                     int row = tblOrder.getSelectedRow();
                     OrderDetails details = listOrder.get(row);
                     txtId.setText(tblOrder.getValueAt(row, 0).toString());
-                    txtOrderTime.setText(details.getOrder().getOrderTime());
-                    txtPatryCompleteTime.setText(details.getOrder().getPantryCompleteTime());
+                    txtWaiter.setText(details.getOrder().getOrderTime());
+                    txtOrderTime.setText(details.getOrder().getPantryCompleteTime());
                     txaDesc.setText(details.getDish().getDescription());
 
                 }
@@ -278,6 +253,24 @@ public class OrderDetailsFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea txaDesc;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtOrderTime;
-    private javax.swing.JTextField txtPatryCompleteTime;
+    private javax.swing.JTextField txtWaiter;
     // End of variables declaration//GEN-END:variables
+
+    private void initData() throws ParseException {
+        try {
+
+            SimpleDateFormat fromDb = new SimpleDateFormat(GLOBAL.CONFIG.TIME_FORMAT);
+            SimpleDateFormat myFormat = new SimpleDateFormat(GLOBAL.CONFIG.TIME_DISPLAY);
+
+            OrderDAO oDao = new OrderDAO();
+            Order order = oDao.get(orderID);
+            txtId.setText(order.getId() + "");
+            txtWaiter.setText(order.getWaiter().getFullName());
+            txtOrderTime.setText(myFormat.format(fromDb.parse(order.getOrderTime())));
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderDetailsFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailsFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

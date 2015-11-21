@@ -5,18 +5,33 @@
  */
 package com.amthuc.view;
 
+import com.amthuc.dao.OrderDAO;
+import com.amthuc.model.Order;
+import com.amthuc.model.OrderDetails;
+import com.amthuc.model.TableLabel;
+import com.amthuc.utils.Helper;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pia
  */
 public class PresentOrderFrame extends javax.swing.JFrame {
-
+    private OrderDAO orderDao = new OrderDAO();
     /**
      * Creates new form PresentOrderFrame
      */
-    public PresentOrderFrame() {
+    PresentOrderFrame(TableLabel t) {        
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        initData(t);
     }
 
     /**
@@ -28,17 +43,112 @@ public class PresentOrderFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTable = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        lblOrderTime = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblWaiter = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblOrderDetails = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblTable.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTable.setText("BÀN 1 ");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        jLabel3.setText("Tồng tiền: ");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        jLabel4.setText("Thời gian order:");
+
+        lblTotal.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
+        lblTotal.setText("69.500 VNĐ");
+
+        lblOrderTime.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        lblOrderTime.setText("11h21p - 21/11/2015");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        jLabel5.setText("Nhân viên:");
+
+        lblWaiter.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        lblWaiter.setText("Tang Hoai Duy");
+
+        tblOrderDetails.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblOrderDetails);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(49, 49, 49))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel5)
+                                .addGap(49, 49, 49))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(79, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblOrderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(169, 169, 169)
+                .addComponent(lblTable)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTable)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblTotal))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lblOrderTime))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblWaiter))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -80,5 +190,48 @@ public class PresentOrderFrame extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblOrderTime;
+    private javax.swing.JLabel lblTable;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblWaiter;
+    private javax.swing.JTable tblOrderDetails;
     // End of variables declaration//GEN-END:variables
+
+    private void initData(TableLabel t) {
+        try {
+            lblTable.setText(t.getName().toUpperCase());
+            Order order = orderDao.getOrderByTableID(t.getId());
+            lblTotal.setText(Helper.formatNumber(order.getTotalCost()) + " VNĐ");
+            lblWaiter.setText(order.getWaiter().getFullName());
+            lblOrderTime.setText(order.getOrderTime());
+            initTables(order.getItems());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PresentOrderFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PresentOrderFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void initTables(List<OrderDetails> items) {
+        Vector title = new Vector();
+        Vector data = new Vector();
+        title.add("Món");
+        title.add("Đơn giá");
+        title.add("Số lượng");
+        title.add("Thành tiền");
+        for (OrderDetails item : items) {
+            Vector record = new Vector();
+            record.add(item.getDish().getName());
+            record.add(Helper.formatNumber(item.getDisplayPrice()) + " VNĐ");
+            record.add(item.getQuantity());
+            record.add(Helper.formatNumber(item.getDisplayPrice() * item.getQuantity()) + " VNĐ");
+            data.add(record);
+        }
+        tblOrderDetails.setModel(new DefaultTableModel(data, title));
+        
+    }
 }
