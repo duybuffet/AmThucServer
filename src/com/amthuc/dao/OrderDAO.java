@@ -110,16 +110,15 @@ public class OrderDAO {
         try {
             TableDAO tblDao = new TableDAO();
             OrderDetailsDAO odetailDao = new OrderDetailsDAO();
-            String query = "INSERT INTO tbl_order (order_table,description,total_cost,order_time,pantry_complete_time, status, waiter_id) VALUES(?,?,?,?,?,?,?)";
+            String query = "INSERT INTO tbl_order (order_table,description,total_cost,pantry_complete_time, status, waiter_id, order_time) VALUES(?,?,?,?,?,?, NOW())";
             DBConnect.getConnection().setAutoCommit(false);
             PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
             ps.setInt(1, order.getOrderTable().getId());
             ps.setString(2, order.getDescription());
             ps.setDouble(3, order.getTotalCost());
-            ps.setString(4, order.getOrderTime());
-            ps.setString(5, order.getPantryCompleteTime());
-            ps.setInt(6, order.getStatus());
-            ps.setInt(7, order.getWaiter().getId());
+            ps.setString(4, order.getPantryCompleteTime());
+            ps.setInt(5, order.getStatus());
+            ps.setInt(6, order.getWaiter().getId());
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
@@ -143,15 +142,14 @@ public class OrderDAO {
     }
 
     public void update(Order order) throws ClassNotFoundException, SQLException {
-        String query = "UPDATE tbl_order SET order_table = ?,description = ?,total_cost = ?,order_time = ?,pantry_complete_time = ?, status = ? WHERE id = ?";
+        String query = "UPDATE tbl_order SET order_table = ?,description = ?,total_cost = ?,pantry_complete_time = ?, status = ? WHERE id = ?";
         PreparedStatement ps = DBConnect.getConnection().prepareStatement(query);
         ps.setInt(1, order.getOrderTable().getId());
         ps.setString(2, order.getDescription());
         ps.setDouble(3, order.getTotalCost());
-        ps.setString(4, order.getOrderTime());
-        ps.setString(5, order.getPantryCompleteTime());
-        ps.setInt(6, order.getStatus());
-        ps.setInt(7, order.getId());
+        ps.setString(4, order.getPantryCompleteTime());
+        ps.setInt(5, order.getStatus());
+        ps.setInt(6, order.getId());
         ps.executeUpdate();
     }
     
