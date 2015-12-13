@@ -11,9 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Message {
-
+    // id của message, các id này được định nghĩa trong com.amthuc.utils.GLOBAL
     private int msgID;
+    // Nội dung thông điệp
     private String msg;
+    
+    // muốn gửi và nhận dữ liệu gì thì set giá trị cho thuộc tính đó 
+    // ví dụ có thể gửi và nhận 1 user, 1 mảng các user, 1 danh mục, 1 mảng các danh mục,...
     private User user;
     private ArrayList<User> arrUsers;
     private User target;

@@ -16,7 +16,6 @@ import com.amthuc.model.Table;
 import com.amthuc.model.User;
 import com.amthuc.server.Client;
 import com.amthuc.server.Message;
-import com.amthuc.server.Server;
 import com.amthuc.utils.GLOBAL;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,6 +46,7 @@ public class ServerFrame extends javax.swing.JFrame {
         initComponents();
         menuPanel = new MenuPanel(this);
         try {
+            // mở cổng đón các kết nối từ client
             myServer = new ServerSocket(port);
 
 //            // Fake danh sách người dung
@@ -62,21 +62,32 @@ public class ServerFrame extends javax.swing.JFrame {
     }
 
     public void listening() throws NullPointerException, IOException {
+        // vòng lặp vô hạn, đón các kết nối mọi lúc
         while (true) {
+            // chấp nhận kết nối từ client
             Socket socket = myServer.accept();
             System.out.println(socket.getInetAddress() + " connected");
+            // tạo 1 uuid để phân biệt giữa các client vs nhau
             UUID uuid = UUID.randomUUID();
+            // khởi tạo 1 đối tượng đại diện cho client vừa kết nối tới
+            // new ProcessMessage()
             Client client = new Client(this, socket, new ProcessMessage(),
                     uuid);
+            // start client lên
             client.start();
+            // quản lý các client hiện đang kết nối bằng cách thêm nó vào mảng các client
             arrClients.add(client);
         }
     }
-
+    
+    /*
+        Hàm xử lý các message ở đây
+    */
     public void ProcessMessage(String msg, Client client) throws SQLException, ClassNotFoundException {
         System.out.println("Dữ liệu từ client : ");
         System.out.println(msg);
         Gson gson = new GsonBuilder().create();
+        // dữ liệu từ client theo định dạng Json, cần fai đọc dữ liệu json bằng hàm fromJson và ép kiểu về Message
         Message message = gson.fromJson(msg, Message.class);
         switch (message.getMsgID()) {
             case GLOBAL.FROM_CLIENT.CONNECT:
@@ -84,12 +95,12 @@ public class ServerFrame extends javax.swing.JFrame {
                 break;
             case GLOBAL.FROM_CLIENT.LOGIN:
                 checkLogin(message, client);
-                updatePlayersList();
+                updateUsersList();
                 break;
 
             case GLOBAL.FROM_CLIENT.LOGOUT:
                 doLogout(message, client);
-                updatePlayersList();
+                updateUsersList();
                 break;
             case GLOBAL.FROM_CLIENT.CHAT:
                 sendChatMessage(message, client);
@@ -208,10 +219,10 @@ public class ServerFrame extends javax.swing.JFrame {
             }
         }
         this.arrClients.remove(client);
-        updatePlayersList();
+        updateUsersList();
     }
 
-    private void updatePlayersList() {
+    private void updateUsersList() {
         System.out.println("Cập nhật danh sách người dùng ( "
                 + arrUsers.size() + " ) : ");
         for (User player : arrUsers) {
@@ -448,16 +459,20 @@ public class ServerFrame extends javax.swing.JFrame {
             sendMessageToClient(msg, client);
         }
     }
-
+    
+    /*
+        Inner class ProcessMessage, override method MessageReceived trong interface onMessageReceived
+        để lắng nghe sự kiện message gửi dến từ client
+    */
     public class ProcessMessage implements Client.onMessageReceived {
 
         public void MessageReceived(String msg, Client uuid) {
             try {
                 ProcessMessage(msg, uuid);
             } catch (SQLException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
