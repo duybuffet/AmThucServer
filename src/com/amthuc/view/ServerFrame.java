@@ -79,10 +79,10 @@ public class ServerFrame extends javax.swing.JFrame {
             arrClients.add(client);
         }
     }
-    
+
     /*
-        Hàm xử lý các message ở đây
-    */
+     Hàm xử lý các message ở đây
+     */
     public void ProcessMessage(String msg, Client client) throws SQLException, ClassNotFoundException {
         System.out.println("Dữ liệu từ client : ");
         System.out.println(msg);
@@ -369,7 +369,7 @@ public class ServerFrame extends javax.swing.JFrame {
                 msg.setMsgID(GLOBAL.TO_CLIENT.RELOAD_TABLES);
                 msg.setArrTables(MenuPanel.allTables);
                 sendMessageToClient(msg, client);
-                
+
             }
         }
     }
@@ -442,6 +442,7 @@ public class ServerFrame extends javax.swing.JFrame {
         try {
             orderDetailsDAO.update(message.getOrderDetails());
             mes.setMsg(GLOBAL.CONFIG.SUCCESS);
+            mes.setOrderDetails(message.getOrderDetails());
         } catch (Exception ex) {
             mes.setMsg(GLOBAL.CONFIG.FAIL);
         } finally {
@@ -459,11 +460,11 @@ public class ServerFrame extends javax.swing.JFrame {
             sendMessageToClient(msg, client);
         }
     }
-    
+
     /*
-        Inner class ProcessMessage, override method MessageReceived trong interface onMessageReceived
-        để lắng nghe sự kiện message gửi dến từ client
-    */
+     Inner class ProcessMessage, override method MessageReceived trong interface onMessageReceived
+     để lắng nghe sự kiện message gửi dến từ client
+     */
     public class ProcessMessage implements Client.onMessageReceived {
 
         public void MessageReceived(String msg, Client uuid) {
